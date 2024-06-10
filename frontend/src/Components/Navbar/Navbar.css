@@ -1,0 +1,29 @@
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px auto;
+}
+.navbar .logo{
+    width: 300px;
+}
+.navbar-menu{
+    display: flex;
+    gap: 20px;
+    font-size: 20px;
+    color: #49557e;
+    text-transform: capitalize;
+}
+.navbar-menu li{
+    list-style: none;
+}
+.navbar-right{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.navbar-favorites-icon img{
+    width: 30px;
+    
+}
