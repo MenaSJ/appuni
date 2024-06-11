@@ -6,7 +6,7 @@ const Footer = () => {
         <div className="footer" id="footer">
             <div className="footer-content">
                 <div className="footer-content-left">
-                    <img src="" alt="" />
+                    <img src={assets.logoG} className="logo" />
                     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos quo eveniet beatae blanditiis amet architecto unde placeat laudantium quos incidunt dolores, facilis deserunt natus a minus in non, at explicabo.</p>
                     <div className="footer-social-icons">
                         <img src={assets.facebook_icon} alt="" />
@@ -32,7 +32,7 @@ const Footer = () => {
                 </div>
             </div>
             <hr />
-            <p className="footer-copyright">Copyright 2024 @ UniversidadesApp.com - Todos los Derechos Reservados.</p>
+            <p className="footer-copyright">Copyright 2024 @ UniExplore.com - Todos los Derechos Reservados.</p>
         </div>
     )
 }

@@ -1,8 +1,9 @@
-.navbar{
+.navbar{ 
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px auto;
+    padding: 20px 0;
+    color: #0d3b66;
 }
 .navbar .logo{
     width: 300px;
@@ -10,12 +11,17 @@
 .navbar-menu{
     display: flex;
     gap: 20px;
-    font-size: 20px;
+    font-size: 18px;
     color: #49557e;
     text-transform: capitalize;
 }
 .navbar-menu li{
     list-style: none;
+    cursor: pointer
+}
+.navbar-menu .active{
+    border-bottom: 2px solid #0d3b66;
+    padding-bottom: 2px;
 }
 .navbar-right{
     display: flex;
@@ -23,7 +29,21 @@
     justify-content: space-between;
     gap: 20px;
 }
+.navbar-right img{
+    cursor: pointer;
+}
 .navbar-favorites-icon img{
     width: 30px;
-    
+}
+.navbar button{
+    cursor: pointer;
+    background: none;
+    font-size: 16px;
+    padding: 15px 30px;
+    border: 2px solid #f4a261;
+    border-radius: 50px;
+    transition: 0.3s;
+}
+.navbar button:hover{
+    background: #fff4f2;
 }

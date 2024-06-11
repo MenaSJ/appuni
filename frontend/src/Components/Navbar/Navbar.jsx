@@ -4,11 +4,11 @@ import "./Navbar.css";
 const Navbar = () => {
     return (
         <div className="navbar">
-            <img src={assets.logo} className="logo" />
+            <img src={assets.logoG} className="logo" />
             <ul className="navbar-menu">
-                <li>Home</li>
-                <li>Acerca de nosotros</li>
-                <li>Contacto</li>
+                <li className="active">Home</li>
+                <li className="">Acerca de nosotros</li>
+                <li className="">Contacto</li>
             </ul>
             <div className="navbar-right">
                 <img src={assets.search_icon} alt="" />
