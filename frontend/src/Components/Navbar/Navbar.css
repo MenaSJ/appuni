@@ -32,18 +32,38 @@
 .navbar-right img{
     cursor: pointer;
 }
-.navbar-favorites-icon img{
-    width: 30px;
-}
 .navbar button{
     cursor: pointer;
     background: none;
     font-size: 16px;
     padding: 15px 30px;
-    border: 2px solid #f4a261;
+    border: 2px solid #0d3b66;
     border-radius: 50px;
     transition: 0.3s;
 }
 .navbar button:hover{
-    background: #fff4f2;
+    background: #0d3b66;
+    color: #ffffff;
+}
+.navbar-favorites-icon img {
+    width: 30px;
+}
+.navbar-favorites-icon {
+    position: relative;
+}
+.navbar-favorites-icon .dot{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: tomato;
+    top: -8px;
+    right: -8px;
+}
+.navbar-right img{
+    transition: 0.3s;
+}
+.navbar-right img:hover{
+    transform: translateY(-2px);
+
 }
