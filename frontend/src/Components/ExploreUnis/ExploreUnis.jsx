@@ -22,7 +22,7 @@ const ExploreUnis = () => {
                             </div>
                         </div>
                     )
-                }) : null /*En el caso de que la variable este vacia */} 
+                }) : null /*En el caso de que la variable este vacia*/} 
             </div>
             <div className="boton">
                 <button className="btn">Explora más</button>
