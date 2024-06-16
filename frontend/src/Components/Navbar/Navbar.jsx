@@ -1,14 +1,16 @@
+import { useState } from "react";
 import { assets } from "../../assets/assets"
 import "./Navbar.css";
 
 const Navbar = () => {
+    const [menu, setMenu] = useState("home")
     return (
-        <div className="navbar">
+        <div className="navbar"> 
             <img src={assets.logoG} className="logo" />
             <ul className="navbar-menu">
-                <li className="active">Home</li>
-                <li className="">Acerca de nosotros</li>
-                <li className="">Contacto</li>
+                <li onClick={() => setMenu("home")} className={(menu ==="home"?"active":"")}>Home</li>
+                <li onClick={() => setMenu("acerca")} className={(menu==="acerca"?"active":"")}>Acerca de nosotros</li>
+                <li onClick={() => setMenu("contacto")} className={(menu==="contacto"?"active":"")}>Contacto</li>
             </ul>
             <div className="navbar-right">
                 <img src={assets.search_icon} alt="" />
@@ -16,7 +18,7 @@ const Navbar = () => {
                     <img src={assets.favorites_icon} alt="" />
                     <div className="dot"></div>
                 </div>
-                <button>Registrate</button>
+                <button className="btn">Registrate</button>
             </div>
         </div>
     )
