@@ -17,6 +17,7 @@ import logout_icon from './logout_icon.png'
 import favorites_icon from './favorites_icon.png'
 import logo from './logo.png'
 import logoG from './logoG.png'  
+import header_utp from './header-utp.png'
 
 export const assets = {
     search_icon,
@@ -35,5 +36,6 @@ export const assets = {
     logout_icon,
     favorites_icon,
     logo,
-    logoG
+    logoG,
+    header_utp
 }
