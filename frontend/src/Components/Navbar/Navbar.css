@@ -32,13 +32,8 @@
     cursor: pointer;
 }
 .navbar button{
-    cursor: pointer;
-    background: none;
-    font-size: 16px;
-    padding: 15px 30px;
     border: 2px solid #0d3b66;
-    border-radius: 50px;
-    transition: 0.3s;
+    width: 150px;
 }
 .navbar button:hover{
     background: #0d3b66;
