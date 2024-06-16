@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
+const cors = require('cors')
 require('dotenv').config();
 
 const rutas = require('./routes/rutas');
 
 // Middleware para parsear el cuerpo de las solicitudes
+app.use(cors());
 app.use(express.json());
 
 // Rutas
