@@ -18,7 +18,7 @@ const Navbar = () => {
                     <img src={assets.favorites_icon} alt="" />
                     <div className="dot"></div>
                 </div>
-                <button>Registrate</button>
+                <button className="btn">Registrate</button>
             </div>
         </div>
     )
