@@ -18,9 +18,9 @@ const Footer = () => {
                     <h2>COMPANIA</h2>
                     <ul>
                         <li>Home</li>
-                        <li>About us</li>
-                        <li>Contact us</li>
-                        <li>Privacy Policy</li>
+                        <li>Acerca De Nosotros</li>
+                        <li>Contacto</li>
+                        <li>Politica de privacidad</li>
                     </ul>
                 </div>
                 <div className="footer-content-right">
