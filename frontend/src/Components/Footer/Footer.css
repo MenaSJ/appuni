@@ -21,7 +21,7 @@
     gap: 20px;
 }
 .footer li{
-    list-style: none;
+    list-style: none; 
     margin-bottom: 10px;
     cursor: pointer;
 }

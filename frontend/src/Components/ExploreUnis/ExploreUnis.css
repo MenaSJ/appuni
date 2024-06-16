@@ -11,7 +11,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(400px, 1fr));
     gap: 1rem;
-    animation: fadeIn 3s;
+    animation: fadeIn 3s; 
 }
 .uni-item{
     width: 100%;

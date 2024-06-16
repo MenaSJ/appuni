@@ -5,7 +5,7 @@ import "./Navbar.css";
 const Navbar = () => {
     const [menu, setMenu] = useState("home")
     return (
-        <div className="navbar">
+        <div className="navbar"> 
             <img src={assets.logoG} className="logo" />
             <ul className="navbar-menu">
                 <li onClick={() => setMenu("home")} className={(menu==="home")?"active":""}>Home</li>
