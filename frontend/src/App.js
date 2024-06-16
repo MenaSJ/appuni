@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 import LoginPopup from './components/LoginPopup/LoginPopup';
 import Home from './pages/Home/Home';
 
+
 function App() {
   
   return (
