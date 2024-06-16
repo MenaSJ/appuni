@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
-    color: #0d3b66;
+    color: black;
 }
 .navbar .logo{
     width: 300px;
@@ -12,7 +12,6 @@
     display: flex;
     gap: 20px;
     font-size: 18px;
-    color: #49557e;
     text-transform: capitalize;
 }
 .navbar-menu li{
@@ -20,7 +19,7 @@
     cursor: pointer
 }
 .navbar-menu .active{
-    border-bottom: 2px solid #0d3b66;
+    border-bottom: 2px solid black;
     padding-bottom: 2px;
 }
 .navbar-right{
