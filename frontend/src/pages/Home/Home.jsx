@@ -1,5 +1,5 @@
-import Header from "../../components/Header/Header"
-import ExploreUnis from "../../components/ExploreUnis/ExploreUnis";
+import Header from "../../Components/Header/Header"
+import ExploreUnis from "../../Components/ExploreUnis/ExploreUnis";
 import "./Home.css";
 const Home = () => {
     return (
