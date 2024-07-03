@@ -37,7 +37,7 @@ app.get('/universidades/:id/carreras', (req, res) => {
         JOIN Carreras C ON U.UniversidadID = C.UniversidadID
         WHERE U.UniversidadID = ?;
     `;
-    db.query(query, [universidadID], (err, results) => {
+    db.query(query, [universidadID], (err, results) => { 
         if (err) {
             return res.status(500).json({ error: err.message });
         }
