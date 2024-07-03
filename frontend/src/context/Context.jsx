@@ -1,12 +1,14 @@
 import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import SearchResults from '../Components/SearchResults/SearchResults';
 
 export const AppContext = createContext();
 
 const AppProvider = (props) => {
     const [unis, setUnis] = useState([])
+    const [searchUnis, setSearchUnis] = useState([]);
     const contextValues = {
-        unis
+        unis, searchUnis, setSearchUnis
     }
     const fetchUnis = async (url) => {
         try {

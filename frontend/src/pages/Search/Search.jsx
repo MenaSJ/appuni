@@ -1,6 +1,11 @@
+import SearchBar from "../../Components/SearchBar/SearchBar"
+import SearchResults from "../../Components/SearchResults/SearchResults"
+
 const Search = () => {
     return (
-        <div>
+        <div className="search">
+            <SearchBar />
+            <SearchResults />
         </div>
     )
 }

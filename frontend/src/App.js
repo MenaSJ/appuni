@@ -5,6 +5,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Footer from './Components/Footer/Footer';
 import Home from './pages/Home/Home';
 import LoginPopup from './Components/LoginPopup/LoginPopup';
+import Search from './pages/Search/Search';
 
 function App() {
   
@@ -18,6 +19,7 @@ function App() {
           <Navbar setShowLogin = {setShowLogin} />
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/search' element={<Search />} />
           </Routes>
         </Router>
       </div>
