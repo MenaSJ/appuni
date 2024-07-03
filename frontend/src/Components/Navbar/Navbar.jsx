@@ -8,7 +8,7 @@ const Navbar = ({setShowLogin}) => {
     const navigate = useNavigate();
     return (
         <div className="navbar"> 
-            <img src={assets.logoG} className="logo" />
+            <img src={assets.logoG} onClick={() => navigate('/')} className="logo" />
             <ul className="navbar-menu">
                 <li onClick={() => setMenu("home")} className={(menu ==="home"?"active":"")}>Home</li>
                 <li onClick={() => setMenu("acerca")} className={(menu==="acerca"?"active":"")}>Acerca de nosotros</li>
