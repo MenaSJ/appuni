@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const mysql = require('mysql');
+const bcrypt = require('bcrypt');
 
 // Configuración de la base de datos
 const db = mysql.createConnection({
@@ -104,6 +105,47 @@ app.delete('/universidades/:id', (req, res) => {
         res.status(204).send();
     });
 });
+
+
+//Registrar usuarios
+app.post('/usuarios/register', async (req, res) => {
+    try {
+        const { nombre, apellido, estado, correo, contrasena } = req.body;
+        console.log('Datos recibidos:', req.body); // Log de los datos recibidos
+
+        if (!nombre || !apellido || !estado || !correo || !contrasena) {
+            console.error('Faltan campos obligatorios');
+            return res.status(400).json({ message: 'Faltan campos obligatorios' });
+        }
+
+        const hash = await bcrypt.hash(contrasena, 10);
+        console.log('Contraseña hash generada');
+
+        const newUser = {
+            nombre,
+            apellido,
+            estado,
+            correo,
+            contrasena: hash
+        };
+
+        const query = 'INSERT INTO usuarios (nombre, apellido, estado, correo, contrasena) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [newUser.nombre, newUser.apellido, newUser.estado, newUser.correo, newUser.contrasena], (err, result) => {
+            if (err) {
+                console.error('Error al registrar usuario en la base de datos:', err);
+                return res.status(500).json({ message: 'Error al registrar usuario en la base de datos', error: err });
+            }
+
+            res.status(201).json({ message: 'Usuario registrado exitosamente', user: newUser });
+            console.log('Usuario registrado exitosamente');
+        });
+    } catch (error) {
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ message: 'Error en el servidor', error: error.message });
+    }
+});
+
+
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
