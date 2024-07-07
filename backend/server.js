@@ -56,12 +56,67 @@ app.get('/universidades', (req, res) => {
         res.json(results);
     });
 });
-// Buscar universidades por nombre o acrónimo 
+// Buscar universidades por nombre o acrónimo
+// app.get('/universidades/search', (req, res) => {
+//     const { q } = req.query;
+//     const query = 'SELECT UniversidadID, Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo FROM Universidades WHERE Nombre LIKE ? OR Acronimo LIKE ?';
+//     const searchTerm = `%${q}%`;
+//     db.query(query, [searchTerm, searchTerm], (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ error: err.message });
+//         }
+//         res.json(results);
+//     });
+// });
 app.get('/universidades/search', (req, res) => {
     const { q } = req.query;
-    const query = 'SELECT UniversidadID, Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo FROM Universidades WHERE Nombre LIKE ? OR Acronimo LIKE ?';
+    const queryUniversidades = `
+        SELECT u.UniversidadID AS UniversidadID, u.nombre AS Nombre, u.Acronimo AS Acronimo, u.paginaweb AS PaginaWeb, u.mision AS Mision, u.logo AS Logo, 
+               c.id AS CarreraID, c.nombre AS NombreCarrera
+        FROM Universidades u
+        LEFT JOIN Universidad_Carreras uc ON u.UniversidadID = uc.universidad_id
+        LEFT JOIN Carreras c ON uc.carrera_id = c.id
+        WHERE u.nombre LIKE ? OR u.acronimo LIKE ?
+    `;
     const searchTerm = `%${q}%`;
-    db.query(query, [searchTerm, searchTerm], (err, results) => {
+    db.query(queryUniversidades, [searchTerm, searchTerm], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        // Organizar los resultados en un formato adecuado
+        const universities = {};
+        results.forEach(row => {
+            if (!universities[row.UniversidadID]) {
+                universities[row.UniversidadID] = {
+                    id: row.UniversidadID,
+                    nombre: row.Nombre,
+                    siglas: row.Acronimo,
+                    pagina_web: row.PaginaWeb,
+                    mision: row.Mision,
+                    logo: row.Logo,
+                    carreras: []
+                };
+            }
+            if (row.CarreraID) {
+                universities[row.UniversidadID].carreras.push({
+                    id: row.CarreraID,
+                    nombre: row.NombreCarrera
+                });
+            }
+        });
+        // Convertir el objeto en un array antes de enviar la respuesta
+        const universitiesArray = Object.values(universities);
+        res.json(universitiesArray);
+    });
+});
+app.get('/universidades/carreras', (req, res) => {
+    const { ids } = req.query;
+    if (!ids) {
+        return res.status(400).json({ error: 'No university IDs provided' });
+    }
+    const universityIds = ids.split(',').map(id => parseInt(id, 10));
+    const query = 'SELECT carreraID, nombreCarrera, universidadId FROM Carreras WHERE UniversidadID IN (?)';
+    db.query(query, [universityIds], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
