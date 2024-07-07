@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { AppContext } from '../../context/Context';
 import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 
 const LoginPopup = ({ setShowLogin }) => {
+    const { login } = useContext(AppContext);
     const [currState, setCurrState] = useState('Login');
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -57,7 +59,7 @@ const LoginPopup = ({ setShowLogin }) => {
                     <h2>{currState}</h2>
                     <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
                 </div>
-                <div className="login-popus-inputs">
+                <div className="login-popup-inputs">
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     {currState === 'Registrate' && (
                         <RegisterOptions formData={formData} handleChange={handleChange} />
@@ -90,6 +92,7 @@ const LoginPopup = ({ setShowLogin }) => {
                     ? <p>¿Crear una nueva cuenta? <span onClick={() => setCurrState('Registrate')}>Clic aquí</span></p>
                     : <p>¿Ya tienes una cuenta? <span onClick={() => setCurrState('Login')}>Login</span></p>
                 }
+                <p>¿Olvidaste tu contraseña? <span>Recupérala aquí</span></p>
             </form>
         </div>
     );
