@@ -146,15 +146,35 @@ app.post('/usuarios/register', async (req, res) => {
 });
 
 
+//Login del usuario
+app.post('/usuarios/login', (req, res) => {
+    const { correo, contrasena } = req.body;
+
+    db.query('SELECT * FROM usuarios WHERE correo = ?', correo, async (err, results) => {
+        if (err) {
+            res.status(500).json({ message: 'Error al iniciar sesión' });
+        } else {
+            if (results.length > 0) {
+                const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
+                if (isMatch) {
+                    res.status(200).json({ message: 'Login exitoso' });
+                } else {
+                    res.status(401).json({ message: 'Contraseña incorrecta' });
+                }
+            } else {
+                res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+        }
+    });
+});
+
+
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Servidor ejecutándose en http://localhost:${port}`);
 });
-
-
-
 
 
 
