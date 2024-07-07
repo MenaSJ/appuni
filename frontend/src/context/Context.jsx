@@ -14,6 +14,7 @@ const AppProvider = (props) => {
         try {
             const {data} = await axios.get(url);
             if (data.length > 0) {
+                console.log(data);
                 return data;
             } else {
                 return [];

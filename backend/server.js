@@ -121,13 +121,14 @@ app.get('/universidades/carreras', (req, res) => {
             return res.status(500).json({ error: err.message });
         }
         res.json(results);
-    });
+    }); 
 });
 
 // Crear una nueva universidad
 app.post('/universidades', (req, res) => {
     const { Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo } = req.body;
     const query = 'INSERT INTO Universidades (Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo) VALUES (?, ?, ?, ?, ?, ?)';
+    console.log(res)
     db.query(query, [Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
