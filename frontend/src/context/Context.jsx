@@ -14,9 +14,9 @@ const AppProvider = (props) => {
         try {
             const {data} = await axios.get(url);
             if (data.length > 0) {
-                setUnis(data)
+                return data;
             } else {
-                setUnis([])
+                return [];
             }
         }
         catch (error) {
@@ -24,11 +24,11 @@ const AppProvider = (props) => {
         }
     }
     useEffect(() => {
-        fetchUnis('http://localhost:4000/universidades');
+        setUnis(fetchUnis('http://localhost:4000/universidades'));
     }, [])
     return <AppContext.Provider value={contextValues}>
         {props.children}
     </AppContext.Provider>
 }
 
-export default AppProvider
+export default AppProvider 

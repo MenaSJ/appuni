@@ -9,7 +9,7 @@ const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [text, setText] = useState("");
     const [errorMess, setErrorMess] = useState(null);
-    const fetchSearch = async (url) => {
+    const fetchUnis = async (url) => {
         try {
             const { data } = await axios.get(url, {
                 params: {
@@ -18,9 +18,7 @@ const SearchBar = () => {
             });
             if (data.length > 0) {
                 setSearchUnis(data);
-                console.log(data)
             } else {
-                console.log(searchTerm)
                 setSearchUnis([]);
                 setErrorMess("Ningun resultado");
             }
@@ -30,7 +28,7 @@ const SearchBar = () => {
     }
     useEffect(() => {
         if(!searchTerm) return 
-        fetchSearch('http://localhost:4000/universidades/search');
+        fetchUnis('http://localhost:4000/universidades/search');
     }, [searchTerm])
     const onSubmit = (e) => {
         e.preventDefault();
