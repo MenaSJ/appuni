@@ -1,3 +1,4 @@
+import "./Search.css";
 import SearchBar from "../../Components/SearchBar/SearchBar"
 import SearchResults from "../../Components/SearchResults/SearchResults"
 
