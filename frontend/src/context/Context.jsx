@@ -7,17 +7,17 @@ export const AppContext = createContext();
 const AppProvider = (props) => {
     const [unis, setUnis] = useState([])
     const [searchUnis, setSearchUnis] = useState([]);
+    const [loadingResults, setLoadingResults] = useState(false);
     const contextValues = {
-        unis, searchUnis, setSearchUnis
+        unis, loadingResults, searchUnis, setSearchUnis, setLoadingResults
     }
     const fetchUnis = async (url) => {
         try {
             const {data} = await axios.get(url);
             if (data.length > 0) {
-                console.log(data);
-                return data;
+                setUnis(data);
             } else {
-                return [];
+                setUnis([]);
             }
         }
         catch (error) {
@@ -25,7 +25,7 @@ const AppProvider = (props) => {
         }
     }
     useEffect(() => {
-        setUnis(fetchUnis('http://localhost:4000/universidades'));
+        fetchUnis('http://localhost:4000/universidades');
     }, [])
     return <AppContext.Provider value={contextValues}>
         {props.children}

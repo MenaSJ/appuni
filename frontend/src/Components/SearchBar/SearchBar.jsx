@@ -5,11 +5,12 @@ import "./SearchBar.css";
 import { AppContext } from "../../context/Context";
 
 const SearchBar = () => {
-    const { setSearchUnis } = useContext(AppContext);
+    const { setSearchUnis, setLoadingResults } = useContext(AppContext);
     const [searchTerm, setSearchTerm] = useState("");
     const [text, setText] = useState("");
     const [errorMess, setErrorMess] = useState(null);
     const fetchUnis = async (url) => {
+        setLoadingResults(true);
         try {
             const { data } = await axios.get(url, {
                 params: {
@@ -25,6 +26,7 @@ const SearchBar = () => {
         } catch (error) {
             console.log(error);
         }
+        setTimeout(() => { setLoadingResults(false); }, 2000)
     }
     useEffect(() => {
         if(!searchTerm) return 
