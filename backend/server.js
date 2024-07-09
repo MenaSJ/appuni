@@ -168,6 +168,36 @@ app.post('/usuarios/login', (req, res) => {
     });
 });
 
+// Recuperar contraseña
+app.post('/usuarios/recover', (req, res) => {
+    const { correo, nuevaContrasena } = req.body;
+
+    // Verificar si el usuario existe
+    db.query('SELECT * FROM usuarios WHERE correo = ?', correo, (err, results) => {
+        if (err) {
+            res.status(500).json({ message: 'Error al recuperar la contraseña' });
+        } else {
+            if (results.length > 0) {
+                // Hash de la nueva contraseña
+                bcrypt.hash(nuevaContrasena, 10, (err, hash) => {
+                    if (err) throw err;
+
+                    // Actualizar la contraseña del usuario en la base de datos
+                    db.query('UPDATE usuarios SET contrasena = ? WHERE correo = ?', [hash, correo], (err, result) => {
+                        if (err) {
+                            res.status(500).json({ message: 'Error al actualizar la contraseña' });
+                        } else {
+                            res.status(200).json({ message: 'Contraseña actualizada exitosamente' });
+                            console.log('Contraseña recuperada');
+                        }
+                    });
+                });
+            } else {
+                res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+        }
+    });
+});
 
 
 // Iniciar el servidor

@@ -12,7 +12,8 @@ const LoginPopup = ({ setShowLogin }) => {
         apellido: '',
         estado: '',
         correo: '',
-        contrasena: ''
+        contrasena: '',
+        nuevaContrasena: ''
     });
     const [error, setError] = useState('');
 
@@ -26,7 +27,7 @@ const LoginPopup = ({ setShowLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.correo || !formData.contrasena || (currState === 'Registrate' && (!formData.nombre || !formData.apellido || !formData.estado))) {
+        if (!formData.correo || (currState !== 'Recuperar' && !formData.contrasena) || (currState === 'Registrate' && (!formData.nombre || !formData.apellido || !formData.estado))) {
             setError('Todos los campos son obligatorios');
             return;
         }
@@ -38,20 +39,29 @@ const LoginPopup = ({ setShowLogin }) => {
         }
 
         try {
-            const response = await axios.post(`http://localhost:4000/usuarios/${currState === 'Registrate' ? 'register' : 'login'}`, formData);
-            alert(response.data.message); 
-            if (currState === 'Login') {
-                login(formData.correo); // Assuming correo is used as the username
+            let response;
+            if (currState === 'Recuperar') {
+                response = await axios.post('http://localhost:4000/usuarios/recover', {
+                    correo: formData.correo,
+                    nuevaContrasena: formData.nuevaContrasena
+                });
+            } else {
+                response = await axios.post(`http://localhost:4000/usuarios/${currState === 'Registrate' ? 'register' : 'login'}`, formData);
             }
+
+            alert(response.data.message);
+            setShowLogin(false);
         } catch (error) {
-            alert(`Error al ${currState === 'Registrate' ? 'registrar' : 'iniciar sesión'} el usuario`); 
+            alert(`Error al ${currState === 'Registrate' ? 'registrar' : currState === 'Recuperar' ? 'recuperar la contraseña' : 'iniciar sesión'} el usuario`);
         }
+
         setFormData({
             nombre: '',
             apellido: '',
             estado: '',
             correo: '',
-            contrasena: ''
+            contrasena: '',
+            nuevaContrasena: ''
         });
     };
 
@@ -133,14 +143,26 @@ const LoginPopup = ({ setShowLogin }) => {
                         onChange={handleChange}
                         required
                     />
-                    <input
-                        type="password"
-                        name="contrasena"
-                        placeholder="Tu contraseña"
-                        value={formData.contrasena}
-                        onChange={handleChange}
-                        required
-                    />
+                    {currState !== 'Recuperar' && (
+                        <input
+                            type="password"
+                            name="contrasena"
+                            placeholder="Tu contraseña"
+                            value={formData.contrasena}
+                            onChange={handleChange}
+                            required
+                        />
+                    )}
+                    {currState === 'Recuperar' && (
+                        <input
+                            type="password"
+                            name="nuevaContrasena"
+                            placeholder="Nueva contraseña"
+                            value={formData.nuevaContrasena}
+                            onChange={handleChange}
+                            required
+                        />
+                    )}
                 </div>
                 {currState === 'Registrate' && (
                     <div className="login-popup-condition">
@@ -148,12 +170,14 @@ const LoginPopup = ({ setShowLogin }) => {
                         <p>Acepto los términos y condiciones</p>
                     </div>
                 )}
-                <button type="submit">{currState === 'Registrate' ? 'Crear cuenta' : 'Login'}</button>
+                <button type="submit">{currState === 'Registrate' ? 'Crear cuenta' : currState === 'Recuperar' ? 'Recuperar contraseña' : 'Login'}</button>
                 {currState === 'Login'
                     ? <p>¿Crear una nueva cuenta? <span onClick={() => setCurrState('Registrate')}>Clic aquí</span></p>
-                    : <p>¿Ya tienes una cuenta? <span onClick={() => setCurrState('Login')}>Login</span></p>
+                    : currState === 'Registrate'
+                        ? <p>¿Ya tienes una cuenta? <span onClick={() => setCurrState('Login')}>Login</span></p>
+                        : <p>¿Ya tienes una cuenta? <span onClick={() => setCurrState('Login')}>Login</span></p>
                 }
-                <p>¿Olvidaste tu contraseña? <span>Recupérala aquí</span></p>
+                {currState === 'Login' && <p>¿Olvidaste tu contraseña? <span onClick={() => setCurrState('Recuperar')}>Recupérala aquí</span></p>}
             </form>
         </div>
     );
