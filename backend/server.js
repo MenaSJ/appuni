@@ -3,6 +3,9 @@ const cors = require('cors');
 require('dotenv').config();
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
 
 // Configuración de la base de datos
 const db = mysql.createConnection({
@@ -26,6 +29,8 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json()); // Usar bodyParser para procesar datos JSON
+
 
 // Definición de rutas y modelos
 
@@ -168,37 +173,113 @@ app.post('/usuarios/login', (req, res) => {
     });
 });
 
+
 // Recuperar contraseña
 app.post('/usuarios/recover', (req, res) => {
-    const { correo, nuevaContrasena } = req.body;
+    const { correo } = req.body;
+    const token = crypto.randomBytes(20).toString('hex');
+    const expirationTime = new Date();
+    expirationTime.setHours(expirationTime.getHours() + 1);
 
-    // Verificar si el usuario existe
-    db.query('SELECT * FROM usuarios WHERE correo = ?', correo, (err, results) => {
+    const query = 'SELECT correo FROM usuarios WHERE correo = ?';
+    db.query(query, [correo], (err, result) => {
         if (err) {
-            res.status(500).json({ message: 'Error al recuperar la contraseña' });
-        } else {
-            if (results.length > 0) {
-                // Hash de la nueva contraseña
-                bcrypt.hash(nuevaContrasena, 10, (err, hash) => {
-                    if (err) throw err;
+            console.error('Error obtaining email:', err);
+            res.status(500).json({ error: 'Error obteniendo correo' });
+            return;
+        }
 
-                    // Actualizar la contraseña del usuario en la base de datos
-                    db.query('UPDATE usuarios SET contrasena = ? WHERE correo = ?', [hash, correo], (err, result) => {
-                        if (err) {
-                            res.status(500).json({ message: 'Error al actualizar la contraseña' });
-                        } else {
-                            res.status(200).json({ message: 'Contraseña actualizada exitosamente' });
-                            console.log('Contraseña recuperada');
-                        }
-                    });
+        if (result.length === 0) {
+            res.status(404).send('No se encontró el correo');
+            return;
+        }
+
+        const correoDB = result[0].correo;
+
+        if (correo === correoDB) {
+            const updateTokenQuery = 'UPDATE usuarios SET token = ?, token_time = ? WHERE correo = ?';
+            db.query(updateTokenQuery, [token, expirationTime, correo], (updateErr, updateResult) => {
+                if (updateErr) {
+                    console.error('Error updating token:', updateErr);
+                    res.status(500).json({ error: 'Error actualizando token' });
+                    return;
+                }
+
+                const transporter = nodemailer.createTransport({
+                    service: 'Gmail',
+                    host: 'smtp.gmail.com',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'juanPruebasb@gmail.com',
+                        pass: 'jtia vsxs vekf xdwz',
+                    },
                 });
-            } else {
-                res.status(404).json({ message: 'Usuario no encontrado' });
-            }
+
+                const mailOptions = {
+                    from: 'juanPruebasb@gmail.com',
+                    to: correoDB,
+                    subject: 'Recuperación de contraseña',
+                    text: `Click en el siguiente enlace para recuperar tu contraseña: http://localhost:3000/reset-password/${token}`,
+                };
+
+                transporter.sendMail(mailOptions, (sendMailErr, info) => {
+                    if (sendMailErr) {
+                        console.error('Error sending email:', sendMailErr);
+                        res.status(500).send('Error enviando correo');
+                    } else {
+                        console.log(`Correo enviado: ${info.response}`);
+                        res.status(200).send('Revisa tu correo para instrucciones sobre cómo restablecer tu contraseña');
+                    }
+                });
+            });
+        } else {
+            res.status(404).send('Correo no encontrado');
         }
     });
 });
 
+app.post('/reset-password/:token', (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const checkQuery = 'SELECT correo, token_time FROM usuarios WHERE token = ?';
+    db.query(checkQuery, [token], (err, result) => {
+        if (err) {
+            console.error('Error checking token:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send('Token inválido');
+        }
+
+        const { correo, token_time } = result[0];
+        const currentTime = new Date();
+        if (currentTime > token_time) {
+            return res.status(404).send('El token ha expirado');
+        }
+
+        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+            if (hashErr) {
+                console.error('Error hashing password:', hashErr);
+                return res.status(500).send('Error interno del servidor');
+            }
+
+            const updateQuery = 'UPDATE usuarios SET contrasena = ?, token = NULL, token_time = NULL WHERE correo = ?';
+            db.query(updateQuery, [hashedPassword, correo], (updateErr, updateResult) => {
+                if (updateErr) {
+                    console.error('Error updating password:', updateErr);
+                    return res.status(500).send('Error actualizando la contraseña');
+                }
+                if (updateResult.affectedRows === 0) {
+                    return res.status(404).send('Error actualizando la contraseña');
+                }
+                return res.status(200).send('Contraseña restablecida con éxito');
+            });
+        });
+    });
+});
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
