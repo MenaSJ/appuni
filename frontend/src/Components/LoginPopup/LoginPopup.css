@@ -8,7 +8,9 @@
     background-color: #00000090; /* Fondo semitransparente negro */
     display: grid;
 }
-
+.login-popup h2{
+    text-transform: capitalize;
+}
 .login-popup-container {
     place-self: center;
     width: max(23vw, 330px); /* Ancho máximo 23vw o 330px */
@@ -22,25 +24,21 @@
     font-size: 14px; /* Tamaño de fuente */
     animation: fadeIn 0.5s; /* Animación de aparición */
 }
-
 .login-popup-title {
     display: flex;
     justify-content: space-between; /* Espacio entre elementos */
     align-items: center; /* Alineación vertical */
     color: black; /* Color de texto negro */
 }
-
 .login-popup-title img {
     width: 16px; /* Ancho de imagen */
     cursor: pointer; /* Cursor de puntero */
 }
-
 .login-popup-inputs {
     display: flex;
     flex-direction: column;
     gap: 20px; /* Espacio entre elementos */
 }
-
 .login-popup-inputs input,
 .login-popup-inputs select {
     outline: none; /* Sin contorno */
