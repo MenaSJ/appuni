@@ -200,6 +200,7 @@ app.post('/usuarios/register', async (req, res) => {
         res.status(500).json({ message: 'Error en el servidor', error: error.message });
     }
 });
+
 //Login del usuario
 app.post('/usuarios/login', (req, res) => {
     const { correo, contrasena } = req.body;
@@ -220,7 +221,6 @@ app.post('/usuarios/login', (req, res) => {
         }
     });
 });
-
 
 // Recuperar contraseña
 app.post('/usuarios/recover', (req, res) => {

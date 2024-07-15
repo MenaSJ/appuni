@@ -7,6 +7,8 @@ import Home from './pages/Home/Home';
 import LoginPopup from './Components/LoginPopup/LoginPopup';
 import Search from './pages/Search/Search';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
+import AboutUs from './pages/AboutUs/AboutUs';
+import Contact from './pages/Contact/Contact';
 
 function App() {
   
@@ -21,6 +23,8 @@ function App() {
           <Routes>
             <Route path='*' element={<Home />} />
             <Route path='/' element={<Home />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path='/search' element={<Search />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
           </Routes>
