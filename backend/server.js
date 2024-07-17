@@ -76,7 +76,7 @@ app.get('/universidades', (req, res) => {
 app.get('/universidades/search', (req, res) => {
     const { q } = req.query;
     const queryUniversidades = `
-        SELECT u.UniversidadID AS UniversidadID, u.nombre AS Nombre, u.Acronimo AS Acronimo, u.paginaweb AS PaginaWeb, u.mision AS Mision, u.logo AS Logo, 
+        SELECT u.UniversidadID AS UniversidadID, u.nombre AS Nombre, u.Acronimo AS Acronimo, u.paginaweb AS PaginaWeb, u.mision AS Mision, u.vision AS Vision, u.logo AS Logo, 
                c.id AS CarreraID, c.nombre AS NombreCarrera
         FROM Universidades u
         LEFT JOIN Universidad_Carreras uc ON u.UniversidadID = uc.universidad_id
@@ -98,6 +98,7 @@ app.get('/universidades/search', (req, res) => {
                     siglas: row.Acronimo,
                     pagina_web: row.PaginaWeb,
                     mision: row.Mision,
+                    vision: row.Vision,
                     logo: row.Logo,
                     carreras: []
                 };
@@ -212,7 +213,7 @@ app.post('/usuarios/login', (req, res) => {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
                     console.log('sesion iniciada')
-                    res.status(200).json({ message: 'Login exitoso' });
+                    res.status(200).json({ message: 'Login exitoso', correo: correo});
                 } else {
                     res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
