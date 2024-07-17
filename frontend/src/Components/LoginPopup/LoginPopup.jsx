@@ -7,7 +7,7 @@ import { assets } from "../../assets/assets";
 const URL = "http://localhost:4000/usuarios/"
 
 const LoginPopup = ({ setShowLogin }) => {
-    const {  } = useContext(AppContext);
+    const { setUser } = useContext(AppContext);
     const [currState, setCurrState] = useState('login');
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -31,6 +31,7 @@ const LoginPopup = ({ setShowLogin }) => {
         }
         try {
             const response = await axios.post(URL + currState, formData);
+            setUser(response.data.email);
             setCurrState('login');
         } catch (error) {
             console.log(error);

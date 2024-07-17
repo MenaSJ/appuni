@@ -8,8 +8,10 @@ const AppProvider = (props) => {
     const [unis, setUnis] = useState([])
     const [searchUnis, setSearchUnis] = useState([]);
     const [loadingResults, setLoadingResults] = useState(false);
+    const [user, setUser] = useState({email:''})
     const contextValues = {
-        unis, loadingResults, searchUnis, setSearchUnis, setLoadingResults
+        unis, loadingResults, searchUnis, setSearchUnis, setLoadingResults,
+        user, setUser
     }
     const fetchUnis = async (url) => {
         try {

@@ -10,6 +10,8 @@ import ResetPassword from './Components/ResetPassword/ResetPassword';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Contact from './pages/Contact/Contact';
 import Details from './pages/Details/Details';
+import RutaProtegida from './Components/protected/RutaProtegida';
+import SinPermiso from './Components/Protected/SinPermiso';
 
 function App() {
   
@@ -28,6 +30,7 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<Contact />} />
             <Route path='/search' element={<Search />} />
+            <Route path='/bloqueado' element={<SinPermiso />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
           </Routes>
         </Router>
