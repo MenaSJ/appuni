@@ -211,12 +211,13 @@ app.post('/usuarios/login', (req, res) => {
             if (results.length > 0) {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
+                    console.log('sesion iniciada')
                     res.status(200).json({ message: 'Login exitoso' });
                 } else {
-                    res.status(401).json({ message: 'Correo o Contrasena incorrectas' });
+                    res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
             } else {
-                res.status(404).json({ message: 'Correo o Contrasena incorrectas' });
+                res.status(404).json({ message: 'Correo o Contraseña incorrectas' });
             }
         }
     });

@@ -9,6 +9,7 @@ import Search from './pages/Search/Search';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Contact from './pages/Contact/Contact';
+import Details from './pages/Details/Details';
 
 function App() {
   
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path='*' element={<Home />} />
             <Route path='/' element={<Home />} />
+            <Route path='/details' element={<Details />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<Contact />} />
             <Route path='/search' element={<Search />} />

@@ -1,6 +1,7 @@
 import "./SearchResults.css";
 import { useContext } from "react"
 import { AppContext } from "../../context/Context"
+import { useNavigate } from 'react-router-dom';
 
 const SearchResults = () => {
     const { searchUnis, loadingResults } = useContext(AppContext);
@@ -28,10 +29,11 @@ function CardLoading() {
     )
 }
 const Universidades = ({ searchUnis }) => {
+    const navigate = useNavigate();
     return (
         <>
             {searchUnis.map((item, index) => (
-                <div className="uni-card" key={index}>
+                <div className="uni-card" onClick={()=>navigate('/details')} key={index}>
                     <img src={item.logo} alt={item.nombre} />
                     <div className="uni-card-body">
                         <h1>{item.nombre} <span>({item.siglas})</span></h1>
