@@ -200,6 +200,7 @@ app.post('/usuarios/register', async (req, res) => {
         res.status(500).json({ message: 'Error en el servidor', error: error.message });
     }
 });
+
 //Login del usuario
 app.post('/usuarios/login', (req, res) => {
     const { correo, contrasena } = req.body;
@@ -210,17 +211,17 @@ app.post('/usuarios/login', (req, res) => {
             if (results.length > 0) {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
+                    console.log('sesion iniciada')
                     res.status(200).json({ message: 'Login exitoso' });
                 } else {
-                    res.status(401).json({ message: 'Correo o Contrasena incorrectas' });
+                    res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
             } else {
-                res.status(404).json({ message: 'Correo o Contrasena incorrectas' });
+                res.status(404).json({ message: 'Correo o Contraseña incorrectas' });
             }
         }
     });
 });
-
 
 // Recuperar contraseña
 app.post('/usuarios/recover', (req, res) => {
