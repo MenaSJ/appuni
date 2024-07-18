@@ -281,7 +281,6 @@ app.post('/usuarios/recover', (req, res) => {
         }
     });
 });
-
 app.post('/reset-password/:token', (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
