@@ -2,15 +2,26 @@ import "./Details.css";
 import { useContext } from "react";
 import { AppContext } from "../../context/Context";
 import { useParams, useNavigate } from "react-router-dom";
+import { useJsApiLoader, GoogleMap, Marker } from '@react-google-maps/api';
 
 const Details = () => {
     const { searchUnis } = useContext(AppContext);
     const { id } = useParams();
+    const { isLoaded, loadError } = useJsApiLoader({
+        googleMapsApiKey: "AIzaSyDU21-y6wfNlFNnZWca7dlBFBu-O6sBlgU",
+        libraries: ['places']
+    });
     const navigate = useNavigate();
     const university = searchUnis.find(uni => uni.id === parseInt(id));
-    console.log(searchUnis);
+
+    const coordinates = { lat: 19.332183, lng: -99.186000 }; // Random coordinates for UNAM
+
     if (!university) {
         return <div className="details">Universidad no encontrada</div>;
+    }
+
+    if (loadError) {
+        return <div className="details">Error loading map</div>;
     }
 
     return (
@@ -32,8 +43,19 @@ const Details = () => {
                 </p>
                 <h2>Ubicación</h2>
                 <p>{university.detalles}</p>
-
-
+                {isLoaded ? (
+                    <div style={{ height: '400px', width: '100%' }}>
+                        <GoogleMap
+                            center={coordinates}
+                            zoom={15}
+                            mapContainerStyle={{ width: "100%", height: "100%" }}
+                        >
+                            <Marker position={coordinates} />
+                        </GoogleMap>
+                    </div>
+                ) : (
+                    <div>Loading map...</div>
+                )}
             </div>
         </div>
     );
