@@ -1,3 +1,4 @@
+// App.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
@@ -12,16 +13,16 @@ import Contact from './pages/Contact/Contact';
 import Details from './pages/Details/Details';
 import RutaProtegida from './Components/Protected/RutaProtegida';
 import SinPermiso from './Components/Protected/SinPermiso';
+import AppProvider from './context/Context';
 
 function App() {
-  
-  const [showLogin, setShowLogin] = useState(false)
+  const [showLogin, setShowLogin] = useState(false);
 
   return (
-    <>
-      <div className="App">
-        {showLogin?<LoginPopup setShowLogin={setShowLogin}/>:<></>}
-        <Router>
+    <AppProvider>
+      <Router>
+        <div className="App">
+          {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
           <Navbar setShowLogin={setShowLogin} />
           <Routes>
             <Route path='*' element={<Home />} />
@@ -34,10 +35,10 @@ function App() {
             <Route path='/bloqueado' element={<SinPermiso />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
           </Routes>
-        </Router>
-      </div>
-      <Footer />
-    </>
+        </div>
+        <Footer />
+      </Router>
+    </AppProvider>
   );
 }
 
