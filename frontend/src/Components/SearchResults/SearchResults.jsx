@@ -33,7 +33,7 @@ const Universidades = ({ searchUnis }) => {
     return (
         <>
             {searchUnis.map((item, index) => (
-                <div className="uni-card" onClick={()=>navigate('/details')} key={index}>
+                <div className="uni-card" onClick={() => navigate(`/details/${item.id}`)} key={index}>
                     <img src={item.logo} alt={item.nombre} />
                     <div className="uni-card-body">
                         <h1>{item.nombre} <span>({item.siglas})</span></h1>
@@ -47,6 +47,7 @@ const Universidades = ({ searchUnis }) => {
         </>
     );
 }
+
 
 export default SearchResults
 
