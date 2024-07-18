@@ -1,16 +1,19 @@
-import { useState } from "react";
+// Navbar.js
+import { useState, useContext } from "react";
 import { assets } from "../../assets/assets";
 import "./Navbar.css";
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context/Context';
 
-const Navbar = ({setShowLogin}) => {
+const Navbar = ({ setShowLogin }) => {
     const [menu, setMenu] = useState("home");
     const navigate = useNavigate();
+    const { user } = useContext(AppContext);
 
     const handleSearchNavigate = () => {
         navigate('/search');
         setMenu('');
-    }
+    };
 
     const handleMenuNavigate = (section) => {
         if (section === "home") {
@@ -21,11 +24,11 @@ const Navbar = ({setShowLogin}) => {
             navigate('/contact');
         }
         setMenu(section);
-    }
+    };
 
     return (
         <div className="navbar">
-            <img src={assets.logoG} onClick={() => handleMenuNavigate("home")} style={{cursor: "pointer"}} className="logo" />
+            <img src={assets.logoG} onClick={() => handleMenuNavigate("home")} style={{ cursor: "pointer" }} className="logo" />
             <ul className="navbar-menu">
                 <li onClick={() => handleMenuNavigate("home")} className={menu === "home" ? "active" : ""}>Home</li>
                 <li onClick={() => handleMenuNavigate("acerca")} className={menu === "acerca" ? "active" : ""}>Acerca de nosotros</li>
@@ -37,7 +40,12 @@ const Navbar = ({setShowLogin}) => {
                     <img src={assets.favorites_icon} alt="" />
                     <div className="dot"></div>
                 </div>
-                <button onClick={() => setShowLogin(true)} className="btn">Login</button>
+                {user.email ? (
+                    <img src={assets.profile_icon} alt="" />
+                    //<span>{user.email}</span>
+                ) : (
+                    <button onClick={() => setShowLogin(true)} className="btn">Login</button>
+                )}
             </div>
         </div>
     );
