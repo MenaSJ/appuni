@@ -27,8 +27,8 @@ const Details = () => {
     return (
         <div className="details">
             <div className="details-header">
-                <img src={university.logo} alt={university.nombre} />
                 <h1>{university.nombre} <span>({university.siglas})</span></h1>
+                <img src={university.logo} alt={university.nombre} />
             </div>
             <div className="details-body">
                 <h2>Misión</h2>
@@ -41,6 +41,14 @@ const Details = () => {
                         {university.pagina_web}
                     </a>
                 </p>
+                
+                <h2>Carreras</h2>
+                {/* <ul>
+                    {university.carreras.map((carrera, index) => (
+                        <li key={index}>{carrera}</li>
+                    ))}
+                </ul> */}
+
                 <h2>Ubicación</h2>
                 <p>{university.detalles}</p>
                 {isLoaded ? (
