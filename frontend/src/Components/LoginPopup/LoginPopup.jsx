@@ -1,10 +1,13 @@
+// LoginPopup.js
 import React, { useState, useContext, useEffect } from 'react';
 import "./LoginPopup.css";
 import axios from 'axios';
 import RegisterForm from '../RegisterForm/RegisterForm';
 import { AppContext } from '../../context/Context';
 import { assets } from "../../assets/assets";
-const URL = "http://localhost:4000/usuarios/"
+import { useNavigate } from 'react-router-dom';
+
+const URL = "http://localhost:4000/usuarios/";
 
 const LoginPopup = ({ setShowLogin }) => {
     const { setUser } = useContext(AppContext);
@@ -17,12 +20,15 @@ const LoginPopup = ({ setShowLogin }) => {
         correo: '',
         contrasena: ''
     });
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.correo || (currState === 'register' && (!formData.nombre || !formData.apellido || !formData.estado))) {
@@ -31,14 +37,16 @@ const LoginPopup = ({ setShowLogin }) => {
         }
         try {
             const response = await axios.post(URL + currState, formData);
-            setUser(response.data.correo);
-            console.log(response.data.correo)
-            setCurrState('login');
+            setUser({ email: response.data.correo });
+            setShowLogin(false);
+            navigate('/');
         } catch (error) {
             console.log(error);
+            setError('Error al iniciar sesión');
         }
         restartForm();
     };
+
     const restartForm = () => {
         setFormData({
             nombre: '',
@@ -48,7 +56,8 @@ const LoginPopup = ({ setShowLogin }) => {
             contrasena: '',
             nuevaContrasena: ''
         });
-    }
+    };
+
     useEffect(() => {
         setFormData({
             nombre: '',
@@ -58,7 +67,8 @@ const LoginPopup = ({ setShowLogin }) => {
             contrasena: '',
             nuevaContrasena: ''
         });
-    }, [currState])
+    }, [currState]);
+
     return (
         <div className="login-popup">
             <form className="login-popup-container" onSubmit={handleSubmit}>
@@ -117,4 +127,3 @@ const LoginPopup = ({ setShowLogin }) => {
     );
 }
 export default LoginPopup;
-

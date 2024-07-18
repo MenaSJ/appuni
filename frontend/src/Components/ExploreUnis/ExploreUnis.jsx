@@ -1,6 +1,7 @@
 import "./ExploreUnis.css";
 import { useContext } from "react";
 import { AppContext } from "../../context/Context";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ExploreUnis = () => {
     const { unis } = useContext(AppContext);
@@ -11,8 +12,8 @@ const ExploreUnis = () => {
             <p className="explore-unis-text">
                 Podras buscar y obtener información detallada de las universidades de Puebla Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab alias eligendi cupiditate saepe doloribus dolorum sit, itaque voluptatem iure modi iste culpa, deleniti quibusdam quasi minus enim temporibus expedita quod.
             </p>
-            <div className="explore-unis-list">
-                {randomUnis.length > 0 ? randomUnis.map(item => { //En el caso de que la variable no este vacia, etncones hacemos un map en la variable
+            <div className="explore-unis-list" >
+                {randomUnis.length > 0 ? randomUnis.map(item => { //En el caso de que la variable no este vacia, entcones hacemos un map en la variable
                     return (
                         <div className="uni-item">
                             <img src={item.Logo} />
