@@ -4,7 +4,7 @@ import SearchResults from "../../Components/SearchResults/SearchResults"
 
 const Search = () => {
     return (
-        <div className="search">
+        <div className="search main-container">
             <SearchBar />
             <SearchResults />
         </div>

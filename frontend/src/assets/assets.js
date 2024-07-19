@@ -18,6 +18,8 @@ import favorites_icon from './favorites_icon.png'
 import logo from './logo.png'
 import logoG from './logoG.png'  
 import header_utp from './header-utp.png'
+import vision from './vision.png'
+import mision from './mision.png'
 
 export const assets = {
     search_icon,
@@ -37,5 +39,7 @@ export const assets = {
     favorites_icon,
     logo,
     logoG,
-    header_utp
+    header_utp,
+    vision,
+    mision
 }
