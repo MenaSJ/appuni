@@ -9,9 +9,21 @@ const AppProvider = (props) => {
     const [searchUnis, setSearchUnis] = useState([]);
     const [loadingResults, setLoadingResults] = useState(false);
     const [user, setUser] = useState({ email: '' });
+
+    const logout = () => {
+        setUser({ email: null }); // Limpia el estado del usuario
+        console.log("Sesión cerrada");
+    };
+
     const contextValues = {
-        unis, loadingResults, searchUnis, setSearchUnis, setLoadingResults,
-        user, setUser
+        unis,
+        loadingResults,
+        searchUnis,
+        setSearchUnis,
+        setLoadingResults,
+        user,
+        setUser,
+        logout
     };
 
     const fetchUnis = async (url) => {
