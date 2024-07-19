@@ -1,0 +1,71 @@
+
+.admin-universities-page {
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+}
+
+.admin-universities-page h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.table-container {
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+button.edit-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+button.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+button.edit-button:hover {
+    background-color: #45a049;
+}
+
+button.delete-button:hover {
+    background-color: #e57373;
+}
