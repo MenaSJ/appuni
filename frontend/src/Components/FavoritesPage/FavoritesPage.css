@@ -1,0 +1,78 @@
+.favorites-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    padding: 2em;
+}
+
+.favorites-title {
+    font-weight: 450;
+    text-align: center;
+    color: #0d3b66;
+}
+
+.favorites-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    animation: fadeIn 3s;
+}
+
+.favorite-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.favorite-card {
+    display: flex;
+    width: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.favorite-media {
+    width: 100px;
+    height: 100px;
+    background-color: #cfd8dc;
+}
+
+.favorite-content {
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.favorite-title {
+    font-weight: 400;
+}
+
+.favorite-description {
+    color: #555;
+}
+
+.delete-button {
+    margin: 10px;
+    color: red;
+}
+
+.favorite-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transform: translateY(-4px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .favorites-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
