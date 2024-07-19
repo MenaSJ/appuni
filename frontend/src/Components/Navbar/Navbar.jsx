@@ -26,6 +26,10 @@ const Navbar = ({ setShowLogin }) => {
         setMenu(section);
     };
 
+    const handleProfileNavigate = () => {
+        navigate('/profile');
+    };
+
     return (
         <div className="navbar">
             <img src={assets.logoG} onClick={() => handleMenuNavigate("home")} style={{ cursor: "pointer" }} className="logo" />
@@ -41,7 +45,7 @@ const Navbar = ({ setShowLogin }) => {
                     <div className="dot"></div>
                 </div>
                 {user.email ? (
-                    <img src={assets.profile_icon} alt="" />
+                    <img src={assets.profile_icon} alt="" onClick={handleProfileNavigate} style={{ cursor: "pointer" }} />
                     //<span>{user.email}</span>
                 ) : (
                     <button onClick={() => setShowLogin(true)} className="btn">Login</button>
