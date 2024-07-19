@@ -42,7 +42,7 @@ const Navbar = ({ setShowLogin }) => {
             <div className="navbar-right">
                 <img onClick={handleSearchNavigate} src={assets.search_icon} alt="" />
                 <div className="navbar-favorites-icon">
-                    <img src={assets.favorites_icon} alt="" />
+                    <img src={assets.favorites_icon} alt="" onClick={() => navigate('/favoritos')} />
                     <div className="dot"></div>
                 </div>
                 {user.email ? (
