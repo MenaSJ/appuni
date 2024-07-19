@@ -31,48 +31,53 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json()); // Usar bodyParser para procesar datos JSON
 
-
-// Definición de rutas y modelos
-
-// Ruta para obtener carreras por universidad
-app.get('/universidades/:id/carreras', (req, res) => {
-    const universidadID = req.params.id;
-    const query = `
-        SELECT C.NombreCarrera
-        FROM Universidades U
-        JOIN Carreras C ON U.UniversidadID = C.UniversidadID
-        WHERE U.UniversidadID = ?;
-    `;
-    db.query(query, [universidadID], (err, results) => { 
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
-});
-
-// Ruta para obtener todas las universidades
+// Ruta para obtener todas las universidades con sus carreras
 app.get('/universidades', (req, res) => {
-    const query = 'SELECT UniversidadID, Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo FROM Universidades';
+    const query = `
+        SELECT u.UniversidadID, u.Nombre, u.Acronimo, u.PaginaWeb, u.Mision, u.Vision, u.Logo, 
+               c.id AS CarreraID, c.nombre AS NombreCarrera
+        FROM Universidades u
+        LEFT JOIN Universidad_Carreras uc ON u.UniversidadID = uc.universidad_id
+        LEFT JOIN Carreras c ON uc.carrera_id = c.id
+    `;
+    
     db.query(query, (err, results) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            console.error('Error en la consulta SQL:', err);
+            return res.status(500).json({ error: 'Error interno del servidor' });
         }
-        res.json(results);
+        // Objeto para almacenar las universidades indexadas por UniversidadID
+        const universities = {};
+        // Iterar sobre los resultados y construir el objeto universities
+        results.forEach(row => {
+            const universityID = row.UniversidadID;
+            if (!universities[universityID]) {
+                universities[universityID] = {
+                    id: universityID,
+                    nombre: row.Nombre,
+                    siglas: row.Acronimo,
+                    pagina_web: row.PaginaWeb,
+                    mision: row.Mision,
+                    vision: row.Vision,
+                    logo: row.Logo,
+                    carreras: [] // Inicializar el array de carreras
+                };
+            }
+            // Agregar carrera a la universidad actual si existe
+            if (row.CarreraID) {
+                universities[universityID].carreras.push({
+                    id: row.CarreraID,
+                    nombre: row.NombreCarrera
+                });
+            }
+        });
+        // Convertir el objeto universities en un array de valores
+        const universitiesArray = Object.values(universities);
+        // Enviar la respuesta JSON con el array de universidades
+        res.json(universitiesArray);
     });
 });
-// Buscar universidades por nombre o acrónimo
-// app.get('/universidades/search', (req, res) => {
-//     const { q } = req.query;
-//     const query = 'SELECT UniversidadID, Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo FROM Universidades WHERE Nombre LIKE ? OR Acronimo LIKE ?';
-//     const searchTerm = `%${q}%`;
-//     db.query(query, [searchTerm, searchTerm], (err, results) => {
-//         if (err) {
-//             return res.status(500).json({ error: err.message });
-//         }
-//         res.json(results);
-//     });
-// });
+
 app.get('/universidades/search', (req, res) => {
     const { q } = req.query;
     const queryUniversidades = `
@@ -114,20 +119,6 @@ app.get('/universidades/search', (req, res) => {
         const universitiesArray = Object.values(universities);
         res.json(universitiesArray);
     });
-});
-app.get('/universidades/carreras', (req, res) => {
-    const { ids } = req.query;
-    if (!ids) {
-        return res.status(400).json({ error: 'No university IDs provided' });
-    }
-    const universityIds = ids.split(',').map(id => parseInt(id, 10));
-    const query = 'SELECT carreraID, nombreCarrera, universidadId FROM Carreras WHERE UniversidadID IN (?)';
-    db.query(query, [universityIds], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    }); 
 });
 
 // Crear una nueva universidad

@@ -1,6 +1,6 @@
 // App.js
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import Footer from './Components/Footer/Footer';
@@ -19,11 +19,11 @@ import Admin from './pages/Admin/Admin';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
-
   return (
     <AppProvider>
       <Router>
         <div className="App">
+          <ScrollToTop />
           {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
           <Navbar setShowLogin={setShowLogin} />
           <Routes>
@@ -45,5 +45,13 @@ function App() {
     </AppProvider>
   );
 }
+  const ScrollToTop = () => {
+    // Extracts pathname property(key) from an object
+    const { pathname } = useLocation();
+    // Automatically scrolls to top whenever pathname changes
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+  }
 
 export default App;
