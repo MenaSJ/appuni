@@ -322,7 +322,7 @@ app.get('/usuarios/datos', (req, res) => {
         return res.status(400).json({ message: 'Correo es requerido' });
     }
 
-    db.query('SELECT nombre, apellido, estado, correo FROM usuarios WHERE correo = ?', correo, (err, results) => {
+    db.query('SELECT _id, nombre, apellido, estado, correo FROM usuarios WHERE correo = ?', correo, (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Error al recuperar los datos del usuario' });
@@ -377,8 +377,65 @@ app.delete('/usuarios', (req, res) => {
     });
 });
 
+// Ruta para crear la tabla de favoritos
+app.post('/create-favoritos-table', (req, res) => {
+    const query = `
+        CREATE TABLE IF NOT EXISTS Favoritos (
+            _id INT AUTO_INCREMENT PRIMARY KEY,
+            UsuarioID INT NOT NULL,
+            UniversidadID INT NOT NULL,
+            FOREIGN KEY (UsuarioID) REFERENCES Usuarios(_id),
+            FOREIGN KEY (UniversidadID) REFERENCES Universidades(UniversidadID)
+        );
+    `;
 
+    db.query(query, (err, result) => {
+        if (err) {
+            console.error('Error al crear la tabla de favoritos:', err);
+            return res.status(500).send('Error al crear la tabla de favoritos.');
+        }
+        res.status(201).send('Tabla de favoritos creada exitosamente.');
+    });
+});
 
+// Ruta para agregar un favorito
+app.post('/favoritos', (req, res) => {
+    const { UsuarioID, UniversidadID } = req.body;
+    const query = 'INSERT INTO Favoritos (UsuarioID, UniversidadID) VALUES (?, ?)';
+
+    db.query(query, [UsuarioID, UniversidadID], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ id: results.insertId, UsuarioID, UniversidadID });
+    });
+});
+
+// Ruta para obtener todos los favoritos de un usuario específico
+app.get('/favoritos/:UsuarioID', (req, res) => {
+    const { UsuarioID } = req.params;
+    const query = 'SELECT * FROM Favoritos WHERE UsuarioID = ?';
+
+    db.query(query, [UsuarioID], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json(results);
+    });
+});
+
+// Ruta para eliminar un favorito
+app.delete('/favoritos/:_id', (req, res) => {
+    const { FavoritoID } = req.params;
+    const query = 'DELETE FROM Favoritos WHERE _id = ?';
+
+    db.query(query, [FavoritoID], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).send('Favorito eliminado exitosamente.');
+    });
+});
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;

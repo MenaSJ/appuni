@@ -20,6 +20,8 @@ import logoG from './logoG.png'
 import header_utp from './header-utp.png'
 import vision from './vision.png'
 import mision from './mision.png'
+import heart from './heart.png'
+import heart_full from './heart_full.png'
 
 export const assets = {
     search_icon,
@@ -41,5 +43,7 @@ export const assets = {
     logoG,
     header_utp,
     vision,
-    mision
+    mision,
+    heart,
+    heart_full
 }
