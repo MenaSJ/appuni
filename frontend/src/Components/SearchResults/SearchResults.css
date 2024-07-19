@@ -95,3 +95,15 @@
     width: 100%;
     height: 1rem;
 }
+.uni-title{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.uni-title img{
+    height: 35px;
+    width: 35px;
+}
+.uni-title .btn-liked{
+}
