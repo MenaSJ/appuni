@@ -21,6 +21,7 @@ import AdminUniversitiesPage from './pages/AdminUniversitiesPage/AdminUniversiti
 import ReportsPage from './pages/ReportsPage/ReportsPage';
 import { FavoritesProvider } from './context/FavoritesContext/FavoritesContext';
 import AppProvider from './context/Contex';
+import AboutUs from './components/AboutUs/AboutUs';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -46,6 +47,7 @@ function App() {
             <Route path='/favorites' element={<FavoritesPage />} /> {/* Ruta para la página de favoritos */}
             <Route path='/admin/universities' element={<AdminUniversitiesPage />} /> {/* Ruta para administración de universidades */}
             <Route path='/reportes' element={<ReportsPage />} /> {/* Ruta para la página de reportes */}
+            <Route path="/about" element={<AboutUs />} />
           </Routes>
         </div>
         <Footer />
