@@ -346,6 +346,48 @@ app.get('/usuarios/datos', (req, res) => {
     });
 });
 
+//ADMIN
+// Admin - Mostrar todos los usuarios
+app.get('/usuarios', (req, res) => {
+    const query = 'SELECT nombre, apellido, correo FROM usuarios';
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al recuperar los usuarios' });
+        }
+
+        res.status(200).json(results); // Devuelve la lista de usuarios
+    });
+});
+
+
+// Admin - Eliminar un usuario
+app.delete('/usuarios', (req, res) => {
+    const { correo } = req.body; // Recibe el correo electrónico en el cuerpo de la solicitud
+
+    if (!correo) {
+        return res.status(400).json({ error: 'El correo electrónico es requerido' });
+    }
+
+    const query = 'DELETE FROM usuarios WHERE correo = ?';
+
+    db.query(query, [correo], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al eliminar el usuario' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        res.status(204).send(); // Indica que la solicitud se procesó correctamente y no hay contenido adicional
+    });
+});
+
+
+
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
