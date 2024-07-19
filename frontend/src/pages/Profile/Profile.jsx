@@ -1,4 +1,3 @@
-// Profile.js
 import React, { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../../context/Context';
 import axios from 'axios';
@@ -35,18 +34,22 @@ const Profile = () => {
     };
 
     if (!userData) {
-        return <div>Cargando...</div>;
+        return <div className="loading">Cargando...</div>;
     }
 
     return (
-        <div className="perfil">
-            <h1>Perfil del usuario</h1>
-            <p><strong>Nombre:</strong> {userData.nombre}</p>
-            <p><strong>Apellido:</strong> {userData.apellido}</p>
-            <p><strong>Estado:</strong> {userData.estado}</p>
-            <p><strong>Correo:</strong> {userData.correo}</p>
-            {error && <p className="error">{error}</p>}
-            <button onClick={handleLogout}>Log out</button> {/* Usar handleLogout */}
+        <div className="profile-container">
+            <div className="profile-card">
+                <h1 className="profile-title">Perfil del usuario</h1>
+                <div className="profile-info">
+                    <p><strong>Nombre:</strong> {userData.nombre}</p>
+                    <p><strong>Apellido:</strong> {userData.apellido}</p>
+                    <p><strong>Estado:</strong> {userData.estado}</p>
+                    <p><strong>Correo:</strong> {userData.correo}</p>
+                </div>
+                {error && <p className="error">{error}</p>}
+                <button className="logout-button" onClick={handleLogout}>Log out</button> {/* Usar handleLogout */}
+            </div>
         </div>
     );
 }
