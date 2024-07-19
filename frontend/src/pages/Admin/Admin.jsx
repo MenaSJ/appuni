@@ -37,7 +37,7 @@ const Admin = () => {
     };
 
     return (
-        <section>
+        <section className='main-container'>
             <h1>Admins Page</h1>
             <div className="flexGrow">
                 <Link to="/">Home</Link>
