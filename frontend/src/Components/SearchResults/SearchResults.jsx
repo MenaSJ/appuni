@@ -1,17 +1,48 @@
 import "./SearchResults.css";
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AppContext } from "../../context/Context"
 import { useNavigate } from 'react-router-dom';
 
 const SearchResults = () => {
     const { searchUnis, loadingResults } = useContext(AppContext);
+    const [startUp, setStartUp] = useState(true);
+    useEffect(() => {
+        let load = loadingResults;
+        if (searchUnis.length > 0 || load) {
+            setStartUp(false);
+        }
+    },[searchUnis])
+    if (startUp) {
+        return (
+            <div className="search-container">
+                <div className="search-results">
+                    <h2>Aqui podras buscar universidades</h2>
+                </div>
+            </div>
+        )
+    }
+    if (loadingResults) {
+        return (
+            <div className="search-container">
+                <div className="search-results">
+                    <CardLoading /><CardLoading />
+                </div>
+            </div>
+        )
+    }
+    if (searchUnis.length < 1) {
+        return (
+            <div className="search-container">
+                <div className="search-results">
+                    <h2>Lo sentimos, No se han encontrado resultados para tu búsqueda</h2>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="search-container">
             <div className="search-results">
-                {loadingResults
-                    ? <><CardLoading /><CardLoading /><CardLoading /></>
-                    : <Universidades searchUnis={searchUnis} />
-                }
+                <Universidades searchUnis={searchUnis} />
             </div>
         </div>
     )
@@ -30,6 +61,7 @@ function CardLoading() {
 }
 const Universidades = ({ searchUnis }) => {
     const navigate = useNavigate();
+    console.log(searchUnis);
     return (
         <>
             {searchUnis.map((item, index) => (
@@ -50,26 +82,3 @@ const Universidades = ({ searchUnis }) => {
 
 
 export default SearchResults
-
-// {
-//     searchUnis.map((item) => {
-//         return (
-//             <div className="uni-card">
-//                 <img src={item.logo} alt="" />
-//                 <div className="uni-card-body">
-//                     <h1>{item.nombre}</h1>
-//                     <h3>({item.siglas})</h3>
-//                     <div className="uni-carreras">
-//                         {
-//                             item.carreras.map(carrera => {
-//                                 return (
-//                                     <p>{carrera.nombre}</p>
-//                                 )
-//                             })
-//                         }
-//                     </div>
-//                 </div>
-//             </div>
-//         )
-//     })
-// }

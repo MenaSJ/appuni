@@ -3,7 +3,7 @@ import ExploreUnis from "../../Components/ExploreUnis/ExploreUnis";
 import "./Home.css";
 const Home = () => {
     return (
-        <div className="home">
+        <div className="home main-container">
             <Header />
             <ExploreUnis />
         </div>

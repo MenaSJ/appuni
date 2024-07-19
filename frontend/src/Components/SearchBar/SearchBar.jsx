@@ -8,7 +8,6 @@ const SearchBar = () => {
     const { setSearchUnis, setLoadingResults } = useContext(AppContext);
     const [searchTerm, setSearchTerm] = useState("");
     const [text, setText] = useState("");
-    const [errorMess, setErrorMess] = useState(null);
     const fetchUnis = async (url) => {
         setLoadingResults(true);
         try {
@@ -21,15 +20,15 @@ const SearchBar = () => {
                 setSearchUnis(data);
             } else {
                 setSearchUnis([]);
-                setErrorMess("Ningun resultado");
             }
         } catch (error) {
             console.log(error);
         }
-        setTimeout(() => { setLoadingResults(false); }, 2000)
+        setTimeout(() => { setLoadingResults(false); }, 1000)
     }
+    //Llamaremos a la api de busqueda cada que la variable de estado 'searchTerm' cambie.
     useEffect(() => {
-        if(!searchTerm) return 
+        if(!searchTerm) return //Si la variable 'searchTerm' es null, return.
         fetchUnis('http://localhost:4000/universidades/search');
     }, [searchTerm])
     const onSubmit = (e) => {
@@ -39,7 +38,6 @@ const SearchBar = () => {
             setText("");
         }
     }
-
     return (
         <div className="search-form">
             <form onSubmit={onSubmit} action="">
