@@ -1,0 +1,49 @@
+.about-us {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.about-us h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    color: #0d3b66;
+}
+
+.about-us h2 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    color: #0d3b66;
+}
+
+.about-us p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.about-us ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.about-us li {
+    margin-bottom: 1rem;
+}
+
+.about-us li strong {
+    color: #0d3b66;
+}
+
+.contact p {
+    margin: 0.5rem 0;
+}
+
+.contact strong {
+    font-weight: bold;
+    color: #0d3b66;
+}
