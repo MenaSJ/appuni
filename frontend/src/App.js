@@ -16,6 +16,11 @@ import SinPermiso from './Components/Protected/SinPermiso';
 import AppProvider from './context/Context';
 import Profile from './pages/Profile/Profile';
 import Admin from './pages/Admin/Admin';
+import FavoritesPage from './Components/FavoritesPage/FavoritesPage';
+import AdminUniversitiesPage from './pages/AdminUniversitiesPage/AdminUniversitiesPage';
+import ReportsPage from './pages/ReportsPage/ReportsPage';
+import { FavoritesProvider } from './context/FavoritesContext/FavoritesContext';
+import AppProvider from './context/Contex';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -38,6 +43,9 @@ function App() {
             <Route path='/admin' element={<Admin />}/>
             <Route path='/bloqueado' element={<SinPermiso />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
+            <Route path='/favorites' element={<FavoritesPage />} /> {/* Ruta para la página de favoritos */}
+            <Route path='/admin/universities' element={<AdminUniversitiesPage />} /> {/* Ruta para administración de universidades */}
+            <Route path='/reportes' element={<ReportsPage />} /> {/* Ruta para la página de reportes */}
           </Routes>
         </div>
         <Footer />
