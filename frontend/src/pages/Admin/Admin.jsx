@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import './Admin.css'; // Asegúrate de tener los estilos necesarios
+import './Admin.css'; 
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
@@ -37,29 +37,43 @@ const Admin = () => {
     };
 
     return (
-        <section className='main-container'>
-            <h1>Admins Page</h1>
-            <div className="flexGrow">
-                <Link to="/">Home</Link>
+        <section className='main-container admin'>
+            <h1 className='admin-title'>Admins Page</h1>
+            <div className="flexGrow admin-header">
+                <Link to="/" className='admin-box'>Home</Link>
             </div>
-            <h2>Lista de Usuarios</h2>
+            <h2 className='admin-body'>Lista de Usuarios</h2>
             {loading ? (
                 <p>Cargando...</p>
             ) : (
                 <>
                     {error && <p className="error">{error}</p>}
-                    <ul>
-                        {users.length > 0 ? (
-                            users.map(user => (
-                                <li key={user.correo}>
-                                    {user.nombre} {user.apellido} - {user.correo}
-                                    <button onClick={() => handleDelete(user.correo)}>Eliminar</button>
-                                </li>
-                            ))
-                        ) : (
-                            <p>No hay usuarios</p>
-                        )}
-                    </ul>
+                    {users.length > 0 ? (
+                        <table className='admin-table'>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Correo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map(user => (
+                                    <tr key={user.correo}>
+                                        <td>{user.nombre}</td>
+                                        <td>{user.apellido}</td>
+                                        <td>{user.correo}</td>
+                                        <td>
+                                            <button onClick={() => handleDelete(user.correo)}>Eliminar</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p>No hay usuarios</p>
+                    )}
                 </>
             )}
         </section>
