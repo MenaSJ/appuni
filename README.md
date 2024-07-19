@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+Requerimientos Funcionales
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+    Registro y Autenticación de Usuarios
+        Los usuarios deben poder registrarse con su correo electrónico y una contraseña.
+        Los usuarios deben poder iniciar sesión utilizando sus credenciales.
 
-## Available Scripts
+    Gestión de Perfiles
+        Los usuarios deben poder crear y actualizar su perfil, incluyendo información personal y académica.
+        Los usuarios deben poder subir una foto de perfil.
 
-In the project directory, you can run:
+    Búsqueda de Usuarios
+        El administrador deben poder buscar a otros usuarios dentro de la plataforma.
 
-### `npm start`
+    Comentarios en Páginas Dedicadas de Universidades
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+        Los usuarios deben poder dejar comentarios en las páginas dedicadas a las universidades.
+        Los comentarios deben poder ser editados y eliminados por los autores y administradores.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    Roles de Usuario
 
-### `npm test`
+        La plataforma debe soportar diferentes roles de usuario como estudiantes, profesores y administradores.
+        Cada rol debe tener permisos específicos de acuerdo a sus funciones.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    Gestión de Universidades
 
-### `npm run build`
+        El administrador debe poder agregar y eliminar universidades de la plataforma.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Administración de Usuarios y Comentarios
+        El administrador debe poder eliminar usuarios de la plataforma.
+        El administrador debe poder eliminar comentarios inapropiados o que violen las políticas de la plataforma.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Requerimientos No Funcionales
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    Usabilidad
+        La interfaz debe ser intuitiva y fácil de usar.
+        Debe proporcionar una experiencia de usuario consistente en diferentes dispositivos.
 
-### `npm run eject`
+    Seguridad
+        La información del usuario debe estar protegida mediante cifrado.
+        Debe haber medidas de autenticación robustas para proteger las cuentas de usuario.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    Rendimiento
+        La aplicación debe ser capaz de manejar múltiples usuarios concurrentes sin una disminución significativa en el rendimiento.
+        Las páginas y funcionalidades principales deben cargarse en menos de 3 segundos.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    Escalabilidad
+        La arquitectura del sistema debe permitir la adición de nuevas funcionalidades sin afectar el rendimiento de la aplicación.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    Compatibilidad
+        La aplicación debe ser compatible con los principales navegadores web (Chrome, Firefox, Safari, Edge).
+        Debe ser accesible desde dispositivos móviles y de escritorio.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    Mantenimiento
+        El código debe ser modular y documentado para facilitar su mantenimiento y actualización.
+        Debe haber un sistema de registro de errores para ayudar en la resolución de problemas.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Estos son los requerimientos básicos para una aplicación universitaria como AppUni. Pueden adaptarse y ampliarse según las necesidades específicas del proyecto y de la institución educativa.
