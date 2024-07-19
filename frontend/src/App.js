@@ -14,6 +14,7 @@ import Details from './pages/Details/Details';
 import RutaProtegida from './Components/Protected/RutaProtegida';
 import SinPermiso from './Components/Protected/SinPermiso';
 import AppProvider from './context/Context';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -32,6 +33,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path='/search' element={<Search />} />
             <Route path="/details/:id" element={<Details />} />
+            <Route path='/profile' element={<Profile />} /> 
             <Route path='/bloqueado' element={<SinPermiso />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
           </Routes>
