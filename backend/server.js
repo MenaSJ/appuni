@@ -323,6 +323,30 @@ app.post('/reset-password/:token', (req, res) => {
     });
 });
 
+// Endpoint para recuperar los datos del usuario
+app.get('/usuarios/datos', (req, res) => {
+    const { correo } = req.query; // Asegúrate de enviar el correo en la query string
+
+    if (!correo) {
+        return res.status(400).json({ message: 'Correo es requerido' });
+    }
+
+    db.query('SELECT nombre, apellido, estado, correo FROM usuarios WHERE correo = ?', correo, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error al recuperar los datos del usuario' });
+        }
+
+        if (results.length > 0) {
+            const userData = results[0];
+            res.status(200).json(userData);
+        } else {
+            res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    });
+});
+
+
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
