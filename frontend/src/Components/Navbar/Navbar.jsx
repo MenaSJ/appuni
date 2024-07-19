@@ -8,7 +8,7 @@ import { AppContext } from '../../context/Context';
 const Navbar = ({ setShowLogin }) => {
     const [menu, setMenu] = useState("home");
     const navigate = useNavigate();
-    const { user } = useContext(AppContext);
+    const { user, setSearchUnis } = useContext(AppContext);
 
     const handleSearchNavigate = () => {
         navigate('/search');
@@ -23,6 +23,7 @@ const Navbar = ({ setShowLogin }) => {
         } else if (section === "contacto") {
             navigate('/contact');
         }
+        setSearchUnis([]);
         setMenu(section);
     };
 

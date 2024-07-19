@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+html {
+  scroll-behavior: smooth;
+}
 *{
   margin: 0;
   padding: 0;
@@ -11,11 +14,18 @@ body{
 .App{
   width: 80vw;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+.main-container {
+  margin-bottom: 80px;
+  min-height: 70vh;
 }
 @keyframes fadeIn {
   0%{
     opacity: 0;
   }
+  
   100%{
     opacity: 1;
   }
@@ -23,5 +33,33 @@ body{
 @keyframes shine {
   to {
     background-position-x: -200%;
+  }
+}
+@keyframes mymove {
+  0% {
+    color: #e5e8b6;
+    transform: translateX(-150%);
+  }
+  50% {
+    color: #e5e8b6;
+  }
+  100% {
+    color: #f4a261;
+    transform: translateX(0%);
+  }
+}
+@keyframes mymoveright {
+  0% {
+    color: #f4a261;
+    transform: translateX(150%);
+  }
+
+  50% {
+    color: #f4a261;
+  }
+
+  100% {
+    color: #e5e8b6;
+    transform: translateX(0%);
   }
 }
