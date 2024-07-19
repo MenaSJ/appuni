@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../../context/Context';
-import './FavoritesPage.css';
+import './Favorites.css';
 
-const FavoritesPage = () => {
+const Favorites = () => {
     const { favorites, removeFavorite } = useContext(AppContext);
 
     return (
@@ -26,4 +26,4 @@ const FavoritesPage = () => {
     );
 };
 
-export default FavoritesPage;
+export default Favorites;
