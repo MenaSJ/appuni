@@ -30,22 +30,22 @@ const AppProvider = (props) => {
             console.log(error);
         }
     };
-    const createFavorite = async (usuarioId, universidadId) => {
+    const createFavorite = async (UsuarioID, UniversidadID) => {
         try {
-            const { data } = await axios.post('http://localhost:4000/favoritos', { UsuarioID: usuarioId, UniversidadID: universidadId });
+            const { data } = await axios.post('http://localhost:4000/favoritos', { UsuarioID: UsuarioID, UniversidadID: UniversidadID });
             setFavorites([...favorites, data]);
         } catch (error) {
             console.log(error);
         }
     };
-    const deleteFavorite = async (favoritoId) => {
+    const deleteFavorite = async (userId, favoritoId) => {
         try {
-            await axios.delete(`http://localhost:4000/favoritos/${favoritoId}`);
-            setFavorites(favorites.filter(fav => fav.FavoritoID !== favoritoId));
+            await axios.delete(`http://localhost:4000/favoritos/${userId}/${favoritoId}`);
         } catch (error) {
             console.log(error);
         }
     };
+    
     const contextValues = {
         unis,
         loadingResults,
@@ -59,6 +59,7 @@ const AppProvider = (props) => {
         createFavorite,
         deleteFavorite,
         rol, setRol
+        setFavorites
     };
     useEffect(() => {
         fetchUnis('http://localhost:4000/universidades');

@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { assets } from "../../assets/assets";
 
 const SearchResults = () => {
-    const { searchUnis, loadingResults, user, createFavorite, deleteFavorite, favorites } = useContext(AppContext);
+    const { searchUnis, loadingResults, user, createFavorite, deleteFavorite, favorites, setFavorites } = useContext(AppContext);
     const [startUp, setStartUp] = useState(true);
 
     useEffect(() => {
-        let load = loadingResults;
-        if (searchUnis.length > 0 || load) {
+        if (searchUnis.length > 0 || loadingResults) {
             setStartUp(false);
         }
     }, [searchUnis, loadingResults]);
@@ -20,14 +19,19 @@ const SearchResults = () => {
     };
 
     const handleDeleteFavorite = (favoritoId) => {
+        // Filtrar favoritos para actualizar el estado local
+        const updatedFavorites = favorites.filter(favorite => favoritoId !== favorite._id);
+        // Llamar a la función para eliminar favorito del contexto global
         deleteFavorite(favoritoId);
+        // Actualizar el estado global de favoritos
+        setFavorites(updatedFavorites);
     };
 
     if (startUp) {
         return (
             <div className="search-container">
                 <div className="search-results">
-                    <h2>Aqui podras buscar universidades</h2>
+                    <h2>Aquí podrás buscar universidades</h2>
                 </div>
             </div>
         );
@@ -47,7 +51,7 @@ const SearchResults = () => {
         return (
             <div className="search-container">
                 <div className="search-results">
-                    <h2>Lo sentimos, No se han encontrado resultados para tu búsqueda</h2>
+                    <h2>Lo sentimos, no se han encontrado resultados para tu búsqueda</h2>
                 </div>
             </div>
         );
@@ -91,14 +95,13 @@ const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, fa
                         <div className="uni-title">
                             <h1>{item.nombre} <span>({item.siglas})</span></h1>
                             {isFavorite(item.id) ? (
-                                <img src={assets.heart_full} onClick={() => handleDeleteFavorite(item.id)} className="btn-not-liked"/>
+                                <img src={assets.heart_full} onClick={() => handleDeleteFavorite(item.id)} className="btn-not-liked" alt="Remove from Favorites" />
                             ) : (
-                                <img src={assets.heart} onClick={() => handleAddFavorite(item.id)} className="btn-liked"/>
+                                <img src={assets.heart} onClick={() => handleAddFavorite(item.id)} className="btn-liked" alt="Add to Favorites" />
                             )}
                         </div>
                         <div className="uni-carreras">
-                            <b>Mision</b>
-                            {item.mision}
+                            <b>Misión:</b> {item.mision}
                         </div>
                     </div>
                 </div>
