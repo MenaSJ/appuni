@@ -37,9 +37,11 @@ const LoginPopup = ({ setShowLogin }) => {
         }
         try {
             const response = await axios.post(URL + currState, formData);
+
             setUser({ email: response.data.correo });
             console.log(response.data)
             setRol(response.data.rol)
+
             setShowLogin(false);
             navigate('/');
         } catch (error) {
