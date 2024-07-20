@@ -203,8 +203,8 @@ app.post('/usuarios/login', (req, res) => {
             if (results.length > 0) {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
-                    console.log('sesion iniciada')
-                    res.status(200).json({ message: 'Login exitoso', correo: correo});
+                    console.log(results)
+                    res.status(200).json({ _id: results[0]._id, nombre: results[0].nombre, estado: results[0].estado, email: results[0].correo });
                 } else {
                     res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
@@ -401,6 +401,7 @@ app.post('/create-favoritos-table', (req, res) => {
 // Ruta para agregar un favorito
 app.post('/favoritos', (req, res) => {
     const { UsuarioID, UniversidadID } = req.body;
+    console.log(req.body)
     const query = 'INSERT INTO Favoritos (UsuarioID, UniversidadID) VALUES (?, ?)';
 
     db.query(query, [UsuarioID, UniversidadID], (err, results) => {
@@ -424,18 +425,22 @@ app.get('/favoritos/:UsuarioID', (req, res) => {
     });
 });
 
-// Ruta para eliminar un favorito
-app.delete('/favoritos/:_id', (req, res) => {
-    const { FavoritoID } = req.params;
-    const query = 'DELETE FROM Favoritos WHERE _id = ?';
+app.delete('/favoritos/:userId/:favoritoId', (req, res) => {
+    const userId = req.params.userId;
+    const favoritoId = req.params.favoritoId;
+    const query = 'DELETE FROM Favoritos WHERE _id = ? AND userId = ?';
 
-    db.query(query, [FavoritoID], (err, results) => {
+    db.query(query, [favoritoId, userId], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Favorito no encontrado para este usuario.');
         }
         res.status(200).send('Favorito eliminado exitosamente.');
     });
 });
+
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
