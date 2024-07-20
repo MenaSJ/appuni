@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const URL = "http://localhost:4000/usuarios/";
 
 const LoginPopup = ({ setShowLogin }) => {
-    const { setUser } = useContext(AppContext);
+    const { setUser, setRol } = useContext(AppContext);
     const [currState, setCurrState] = useState('login');
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -37,8 +37,11 @@ const LoginPopup = ({ setShowLogin }) => {
         }
         try {
             const response = await axios.post(URL + currState, formData);
-            setUser(response.data);
+
+            setUser({ email: response.data.correo });
             console.log(response.data)
+            setRol(response.data.rol)
+
             setShowLogin(false);
             navigate('/');
         } catch (error) {
