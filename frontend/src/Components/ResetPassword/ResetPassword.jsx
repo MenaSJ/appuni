@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { useState, useContext, useEffect } from 'react';
 import { AppContext } from "../../context/Context";
 import axios from "axios";
+import "./ResetPassword.css"
 
 const ResetPassword = () => {
     const { token } = useParams();
@@ -35,7 +36,7 @@ const ResetPassword = () => {
         }
     }
     return (
-        <div className="container">
+        <div className="container main-container">
             <div className="form-wrapper">
                 <form onSubmit={handleSubmit} className="login-form">
                     <label htmlFor="password">Contraseña:</label>
