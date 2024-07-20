@@ -46,7 +46,7 @@ const Navbar = ({ setShowLogin }) => {
                     <div className="dot"></div>
                 </div>
                 {user.email ? (
-                    <img src={assets.profile_icon} alt="" onClick={handleProfileNavigate} style={{ cursor: "pointer" }} />
+                    <img src={assets.profile_icon} alt="" onClick={handleProfileNavigate} style={{ cursor: "pointer", margin: "0 40px" }} />
                     //<span>{user.email}</span>
                 ) : (
                     <button onClick={() => setShowLogin(true)} className="btn">Login</button>

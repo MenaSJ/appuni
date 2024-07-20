@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
 import { assets } from "../../assets/assets";
+import axios from "axios";
 
 const SearchResults = () => {
     const { searchUnis, loadingResults, user, createFavorite, deleteFavorite, favorites, setFavorites } = useContext(AppContext);
@@ -16,16 +17,17 @@ const SearchResults = () => {
 
     const handleAddFavorite = (universidadId) => {
         createFavorite(user._id, universidadId);
+        console.log(user)
     };
-
     const handleDeleteFavorite = (favoritoId) => {
         // Filtrar favoritos para actualizar el estado local
-        const updatedFavorites = favorites.filter(favorite => favoritoId !== favorite._id);
-        // Llamar a la función para eliminar favorito del contexto global
-        deleteFavorite(favoritoId);
+        const updatedFavorites = favorites.filter(favorite => favorite._id !== favoritoId);
         // Actualizar el estado global de favoritos
         setFavorites(updatedFavorites);
     };
+
+
+
 
     if (startUp) {
         return (
@@ -95,9 +97,19 @@ const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, fa
                         <div className="uni-title">
                             <h1>{item.nombre} <span>({item.siglas})</span></h1>
                             {isFavorite(item.id) ? (
-                                <img src={assets.heart_full} onClick={() => handleDeleteFavorite(item.id)} className="btn-not-liked" alt="Remove from Favorites" />
+                                <img
+                                    src={assets.heart_full}
+                                    onClick={() => handleDeleteFavorite(item.id)}
+                                    className="btn-not-liked"
+                                    alt="Remove from Favorites"
+                                />
                             ) : (
-                                <img src={assets.heart} onClick={() => handleAddFavorite(item.id)} className="btn-liked" alt="Add to Favorites" />
+                                <img
+                                    src={assets.heart}
+                                    onClick={() => handleAddFavorite(item.id)}
+                                    className="btn-liked"
+                                    alt="Add to Favorites"
+                                />
                             )}
                         </div>
                         <div className="uni-carreras">
@@ -109,5 +121,6 @@ const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, fa
         </>
     );
 };
+
 
 export default SearchResults;

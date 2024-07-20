@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 const RutaProtegida = () => { // componente RutaProtegida, props usuario y redirigir
     const { user } = useContext(AppContext)
-    console.log(user.email == "")
+    console.log(user.email)
     if (user.email == "") { //
         return <Navigate to='/bloqueado' />// navega a login
     }

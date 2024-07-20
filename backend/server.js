@@ -204,7 +204,7 @@ app.post('/usuarios/login', (req, res) => {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
                     console.log(results)
-                    res.status(200).json({ _id: results[0]._id, nombre: results[0].nombre, estado: results[0].estado, email: results[0].correo });
+                    res.status(200).json({ _id: results[0]._id, nombre: results[0].nombre, estado: results[0].estado, email: results[0].correo, rol: results[0].role});
                 } else {
                     res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
@@ -353,9 +353,9 @@ app.get('/usuarios', (req, res) => {
 });
 
 
-// Admin - Eliminar un usuario
+// Ruta para eliminar usuario
 app.delete('/usuarios', (req, res) => {
-    const { correo } = req.body; // Recibe el correo electrónico en el cuerpo de la solicitud
+    const { correo } = req.body;
 
     if (!correo) {
         return res.status(400).json({ error: 'El correo electrónico es requerido' });
@@ -373,7 +373,7 @@ app.delete('/usuarios', (req, res) => {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        res.status(204).send(); // Indica que la solicitud se procesó correctamente y no hay contenido adicional
+        res.status(204).send();
     });
 });
 
@@ -424,11 +424,10 @@ app.get('/favoritos/:UsuarioID', (req, res) => {
         res.status(200).json(results);
     });
 });
-
 app.delete('/favoritos/:userId/:favoritoId', (req, res) => {
     const userId = req.params.userId;
     const favoritoId = req.params.favoritoId;
-    const query = 'DELETE FROM Favoritos WHERE _id = ? AND userId = ?';
+    const query = 'DELETE FROM Favoritos WHERE _id = ? AND UsuarioID = ?';
 
     db.query(query, [favoritoId, userId], (err, results) => {
         if (err) {
