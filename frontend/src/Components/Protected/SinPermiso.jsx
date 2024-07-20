@@ -1,8 +1,8 @@
 const SinPermiso = () => { // cremaos componente sin permiso
     return ( // regresamos html
-        <div className="container">
+        <div className="container main-container">
             <div className="wrapper">
-                <h3>No cuenta con permiso para ingresar a esta sección</h3>
+                <h1>No cuenta con permiso para ingresar a esta sección</h1>
             </div>
         </div>
     )
