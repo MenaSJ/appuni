@@ -9,6 +9,7 @@ const AppProvider = (props) => {
     const [searchUnis, setSearchUnis] = useState([]);
     const [loadingResults, setLoadingResults] = useState(false);
     const [user, setUser] = useState({ _id: '', nombre: '', estado: '', email: '' });
+    const [rol, setRol] = useState('');
     const [favorites, setFavorites] = useState([]);
     const logout = () => {
         setUser({ _id: '', nombre: '', estado: '', email: '' }); // Limpia el estado del usuario
@@ -56,7 +57,8 @@ const AppProvider = (props) => {
         logout,
         favorites,
         createFavorite,
-        deleteFavorite
+        deleteFavorite,
+        rol, setRol
     };
     useEffect(() => {
         fetchUnis('http://localhost:4000/universidades');
