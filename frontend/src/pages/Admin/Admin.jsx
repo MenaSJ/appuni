@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
-import './Admin.css'; 
+import { Link } from 'react-router-dom';
+import './Admin.css';
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
@@ -78,6 +78,6 @@ const Admin = () => {
             )}
         </section>
     );
-}
+};
 
 export default Admin;

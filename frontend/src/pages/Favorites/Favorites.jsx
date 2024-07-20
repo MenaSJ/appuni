@@ -4,7 +4,7 @@ import './Favorites.css';
 
 const Favorites = () => {
     const { favorites, removeFavorite } = useContext(AppContext);
-
+    console.log(favorites)
     return (
         <div className="favorites main-container">
             <h1>Mis Favoritos</h1>
