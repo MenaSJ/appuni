@@ -14,7 +14,6 @@ const Favorites = () => {
                     <table className="favorites-table">
                         <thead>
                             <tr>
-                                <th>Nombre del ítem</th>
                                 <th>Nombre</th>
                                 <th>Acrónimo</th>
                                 <th>Acciones</th>
@@ -23,7 +22,6 @@ const Favorites = () => {
                         <tbody>
                             {favorites.map(favorite => (
                                 <tr key={favorite._id}>
-                                    <td>{favorite.itemName}</td> {/* Ajusta según la estructura de tus datos */}
                                     <td>{favorite.Nombre}</td> {/* Ajusta según la estructura de tus datos */}
                                     <td>{favorite.Acronimo}</td> {/* Puedes mostrar el acrónimo también */}
                                     <td>
