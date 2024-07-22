@@ -2,6 +2,7 @@ import "./Contact.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+
 const Contact = () => {
     return (
         <div className="contacto main-container">
@@ -22,4 +23,4 @@ const Contact = () => {
     )
 }
 
-export default Contact
+export default Contact;
