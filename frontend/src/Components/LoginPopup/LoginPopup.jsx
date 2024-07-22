@@ -1,5 +1,5 @@
 // LoginPopup.js
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import "./LoginPopup.css";
 import axios from 'axios';
 import RegisterForm from '../RegisterForm/RegisterForm';
@@ -10,9 +10,10 @@ import { useNavigate } from 'react-router-dom';
 const URL = "http://localhost:4000/usuarios/";
 
 const LoginPopup = ({ setShowLogin }) => {
-    const { setUser, setRol } = useContext(AppContext);
+    const { setUser, setRol, user, rol } = useContext(AppContext);
     const [currState, setCurrState] = useState('login');
     const [error, setError] = useState('');
+    const [userFocus, setUserFocus] = useState(false);
     const [formData, setFormData] = useState({
         nombre: '',
         apellido: '',
@@ -20,8 +21,11 @@ const LoginPopup = ({ setShowLogin }) => {
         correo: '',
         contrasena: ''
     });
-    const navigate = useNavigate();
+    const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+    const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
+
+    const navigate = useNavigate();
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -37,11 +41,14 @@ const LoginPopup = ({ setShowLogin }) => {
         }
         try {
             const response = await axios.post(URL + currState, formData);
-
-            setUser({ nombre: response.data.nombre, apellido: response.data.apellido, email: response.data.email, _id:response.data._id });
-            console.log(response.data)
+            setUser({ nombre: response.data.nombre, apellido: response.data.apellido, email: response.data.email, _id: response.data._id, estado: response.data.estado });
             setRol(response.data.rol)
-
+            localStorage.setItem('user', JSON.stringify({
+                nombre: response.data.nombre, apellido: response.data.apellido, email: response.data.email, _id: response.data._id, estado: response.data.estado
+            }));
+            localStorage.setItem('rol', JSON.stringify({
+                rol: response.data.rol
+            }));
             setShowLogin(false);
             navigate('/');
         } catch (error) {

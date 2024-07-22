@@ -9,7 +9,6 @@ const Navbar = ({ setShowLogin }) => {
     const [menu, setMenu] = useState("home");
     const navigate = useNavigate();
     const { user, setSearchUnis } = useContext(AppContext);
-
     const handleSearchNavigate = () => {
         navigate('/search');
         setMenu('');

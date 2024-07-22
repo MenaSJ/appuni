@@ -3,15 +3,28 @@ import axios from 'axios';
 
 export const AppContext = createContext();
 
+const getItem = () => {
+    let elRol
+    if (localStorage.getItem('rol')) {
+        elRol = JSON.parse(localStorage.getItem('rol')).rol
+        
+    } else {
+        elRol = '';
+    }
+    return elRol;
+}
 const AppProvider = (props) => {
     const [unis, setUnis] = useState([]);
     const [searchUnis, setSearchUnis] = useState([]);
     const [loadingResults, setLoadingResults] = useState(false);
-    const [user, setUser] = useState({ _id: '', nombre: '', apellido: '', estado: '', email: '', rol: '' });
-    const [rol, setRol] = useState('');
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || { _id: '', nombre: '', apellido: '', estado: '', email: '', rol: '' });
+    const [rol, setRol] = useState( getItem());
     const [favorites, setFavorites] = useState([]);
     const logout = () => {
         setUser({ _id: '', nombre: '', apellido: '', estado: '', email: '', rol: '' }); // Limpia el estado del usuario
+        setRol('');
+        localStorage.removeItem('user');
+        localStorage.removeItem('rol');
     };
 
     const fetchUnis = async (url) => {
@@ -26,6 +39,7 @@ const AppProvider = (props) => {
     const fetchFavorites = async () => {
         try {
             const { data } = await axios.get(`http://localhost:4000/favoritos/${user._id}`);
+            console.log(data)
             setFavorites(data.length > 0 ? data : []);
         } catch (error) {
             console.log(error);
@@ -74,6 +88,8 @@ const AppProvider = (props) => {
 
     useEffect(() => {
         if (user._id) {
+            fetchFavorites();
+        } else if (favorites) {
             fetchFavorites();
         }
     }, [user]);

@@ -2,3 +2,63 @@
     height: 100%;
     width: 100%;
 }
+.about-us.main-container {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+.about-us-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-us-header h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.about-us-header p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.about-us-content section {
+    margin-bottom: 30px;
+}
+
+.about-us-content h2 {
+    font-size: 1.8em;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.about-us-content p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+}
+
+.about-us-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.about-us-content ul li {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 5px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.about-us-content ul li::before {
+    content: "•";
+    color: #E94E77;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
