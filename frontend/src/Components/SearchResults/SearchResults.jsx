@@ -16,18 +16,28 @@ const SearchResults = () => {
     }, [searchUnis, loadingResults]);
 
     const handleAddFavorite = (universidadId) => {
-        createFavorite(user._id, universidadId);
-        console.log(user)
+        createFavorite(user._id, universidadId)
+            .then(() => {
+                // Actualizar el estado local de favoritos después de agregar
+                setFavorites([...favorites, { UniversidadID: universidadId }]);
+            })
+            .catch((error) => {
+                console.error("Error adding favorite:", error);
+            });
     };
-    const handleDeleteFavorite = (favoritoId) => {
-        // Filtrar favoritos para actualizar el estado local
-        const updatedFavorites = favorites.filter(favorite => favorite._id !== favoritoId);
-        // Actualizar el estado global de favoritos
-        setFavorites(updatedFavorites);
+
+    const handleDeleteFavorite = (universidadId) => {
+        deleteFavorite(user._id, universidadId)
+            .then(() => {
+                // Filtrar favoritos para actualizar el estado local
+                const updatedFavorites = favorites.filter(favorite => favorite.UniversidadID !== universidadId);
+                // Actualizar el estado global de favoritos
+                setFavorites(updatedFavorites);
+            })
+            .catch((error) => {
+                console.error("Error deleting favorite:", error);
+            });
     };
-
-
-
 
     if (startUp) {
         return (
@@ -121,6 +131,5 @@ const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, fa
         </>
     );
 };
-
 
 export default SearchResults;
