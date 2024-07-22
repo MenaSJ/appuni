@@ -423,7 +423,7 @@ app.post('/favoritos', (req, res) => {
 // Ruta para obtener todos los favoritos de un usuario específico
 app.get('/favoritos/:UsuarioID', (req, res) => {
     const { UsuarioID } = req.params;
-    const query = 'SELECT * FROM Favoritos WHERE UsuarioID = ?';
+    const query = ' SELECT Favoritos._id, Favoritos.UsuarioID, Universidades.Nombre, Universidades.Acronimo, Universidades.PaginaWeb FROM Favoritos JOIN Universidades ON Favoritos.UniversidadID = Universidades.UniversidadID WHERE Favoritos.UsuarioID = ? ;';
 
     db.query(query, [UsuarioID], (err, results) => {
         if (err) {
@@ -432,6 +432,7 @@ app.get('/favoritos/:UsuarioID', (req, res) => {
         res.status(200).json(results);
     });
 });
+
 app.delete('/favoritos/:userId/:favoritoId', (req, res) => {
     const userId = req.params.userId;
     const favoritoId = req.params.favoritoId;
