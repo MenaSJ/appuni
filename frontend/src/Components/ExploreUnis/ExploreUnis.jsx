@@ -27,7 +27,7 @@ const ExploreUnis = () => {
                 }) : null /*En el caso de que la variable este vacia*/} 
             </div>
             <div className="boton">
-                <button className="btn">Explora más</button>
+                <button className="btn" onClick={() => navigate('/search')}>Explora más</button>
             </div>
         </div>
     )
