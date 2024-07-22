@@ -12,15 +12,14 @@ import AboutUs from './pages/AboutUs/AboutUs';
 import Contact from './pages/Contact/Contact';
 import Details from './pages/Details/Details';
 import RutaProtegida from './Components/Protected/RutaProtegida';
+import RutaProtegidaRol from './Components/Protected/RutaProtegidaRol';
 import SinPermiso from './Components/Protected/SinPermiso';
 import AppProvider from './context/Context';
 import Profile from './pages/Profile/Profile';
 import Admin from './pages/Admin/Admin';
-import FavoritesPage from './Components/FavoritesPage/FavoritesPage';
+import Favorites from './pages/Favorites/Favorites';
 import AdminUniversitiesPage from './pages/AdminUniversitiesPage/AdminUniversitiesPage';
 import ReportsPage from './pages/ReportsPage/ReportsPage';
-import { FavoritesProvider } from './context/FavoritesContext/FavoritesContext';
-import AppProvider from './context/Contex';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -39,13 +38,17 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path='/search' element={<Search />} />
             <Route path="/details/:id" element={<Details />} />
-            <Route path='/profile' element={<Profile />} /> 
-            <Route path='/admin' element={<Admin />}/>
             <Route path='/bloqueado' element={<SinPermiso />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
-            <Route path='/favorites' element={<FavoritesPage />} /> {/* Ruta para la página de favoritos */}
-            <Route path='/admin/universities' element={<AdminUniversitiesPage />} /> {/* Ruta para administración de universidades */}
-            <Route path='/reportes' element={<ReportsPage />} /> {/* Ruta para la página de reportes */}
+            <Route path='/reportes' element={<ReportsPage />} />
+            <Route element={<RutaProtegida />}>
+              <Route path='/favoritos' element={<Favorites />} />
+              <Route path='/profile' element={<Profile />} /> 
+            </Route>
+            <Route element={<RutaProtegidaRol />}>
+              <Route path='/admin' element={<Admin />}/>
+              <Route path='/admin/universities' element={<AdminUniversitiesPage />} /> 
+            </Route>
           </Routes>
         </div>
         <Footer />

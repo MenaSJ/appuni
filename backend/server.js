@@ -203,8 +203,8 @@ app.post('/usuarios/login', (req, res) => {
             if (results.length > 0) {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
-                    console.log('sesion iniciada')
-                    res.status(200).json({ message: 'Login exitoso', correo: correo});
+                    console.log(results)
+                    res.status(200).json({ _id: results[0]._id, nombre: results[0].nombre, estado: results[0].estado, email: results[0].correo });
                 } else {
                     res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
@@ -322,7 +322,7 @@ app.get('/usuarios/datos', (req, res) => {
         return res.status(400).json({ message: 'Correo es requerido' });
     }
 
-    db.query('SELECT nombre, apellido, estado, correo FROM usuarios WHERE correo = ?', correo, (err, results) => {
+    db.query('SELECT _id, nombre, apellido, estado, correo FROM usuarios WHERE correo = ?', correo, (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Error al recuperar los datos del usuario' });
@@ -378,7 +378,69 @@ app.delete('/usuarios', (req, res) => {
     });
 });
 
+// Ruta para crear la tabla de favoritos
+app.post('/create-favoritos-table', (req, res) => {
+    const query = `
+        CREATE TABLE IF NOT EXISTS Favoritos (
+            _id INT AUTO_INCREMENT PRIMARY KEY,
+            UsuarioID INT NOT NULL,
+            UniversidadID INT NOT NULL,
+            FOREIGN KEY (UsuarioID) REFERENCES Usuarios(_id),
+            FOREIGN KEY (UniversidadID) REFERENCES Universidades(UniversidadID)
+        );
+    `;
 
+    db.query(query, (err, result) => {
+        if (err) {
+            console.error('Error al crear la tabla de favoritos:', err);
+            return res.status(500).send('Error al crear la tabla de favoritos.');
+        }
+        res.status(201).send('Tabla de favoritos creada exitosamente.');
+    });
+});
+
+// Ruta para agregar un favorito
+app.post('/favoritos', (req, res) => {
+    const { UsuarioID, UniversidadID } = req.body;
+    console.log(req.body)
+    const query = 'INSERT INTO Favoritos (UsuarioID, UniversidadID) VALUES (?, ?)';
+
+    db.query(query, [UsuarioID, UniversidadID], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ id: results.insertId, UsuarioID, UniversidadID });
+    });
+});
+
+// Ruta para obtener todos los favoritos de un usuario específico
+app.get('/favoritos/:UsuarioID', (req, res) => {
+    const { UsuarioID } = req.params;
+    const query = 'SELECT * FROM Favoritos WHERE UsuarioID = ?';
+
+    db.query(query, [UsuarioID], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json(results);
+    });
+});
+
+app.delete('/favoritos/:userId/:favoritoId', (req, res) => {
+    const userId = req.params.userId;
+    const favoritoId = req.params.favoritoId;
+    const query = 'DELETE FROM Favoritos WHERE _id = ? AND userId = ?';
+
+    db.query(query, [favoritoId, userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Favorito no encontrado para este usuario.');
+        }
+        res.status(200).send('Favorito eliminado exitosamente.');
+    });
+});
 
 
 // Iniciar el servidor
