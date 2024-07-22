@@ -451,7 +451,7 @@ app.delete('/favoritos/:userId/:favoritoId', (req, res) => {
     const userId = req.params.userId;
     const favoritoId = req.params.favoritoId;
     const query = 'DELETE FROM Favoritos WHERE _id = ? AND UsuarioID = ?';
-
+ 
     db.query(query, [favoritoId, userId], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });

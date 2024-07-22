@@ -50,7 +50,7 @@ const Comentarios = ({ universidadID }) => {
                 <ul>
                     {comments.map(comment => (
                         <li key={comment.ComentarioID}>
-                            <p><strong>{comment.nombre} {comment.apellido}</strong>: {comment.Comentario}</p>
+                            <p><strong>{nombreEntero}</strong>: {comment.Comentario}</p>
                             <p id='date'>({new Date(comment.Fecha).toLocaleString()})</p>
                         </li>
                     ))}
