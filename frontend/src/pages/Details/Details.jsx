@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context/Context";
 import { useParams, useNavigate } from "react-router-dom";
 import { useJsApiLoader, GoogleMap, Marker } from '@react-google-maps/api';
+import Comentarios from "../../Components/Comentarios/Comentarios";
 import { assets } from "../../assets/assets";
 
 const Details = () => {
@@ -91,6 +92,7 @@ const Details = () => {
                         )}
                     </div>
                 </div>
+                <Comentarios universidadID={id} />
             </div>
         </div>
     );

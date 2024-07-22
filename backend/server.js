@@ -204,7 +204,7 @@ app.post('/usuarios/login', (req, res) => {
                 const isMatch = await bcrypt.compare(contrasena, results[0].contrasena);
                 if (isMatch) {
                     console.log(results)
-                    res.status(200).json({ _id: results[0]._id, nombre: results[0].nombre, estado: results[0].estado, email: results[0].correo, rol: results[0].role});
+                    res.status(200).json({ _id: results[0]._id, nombre: results[0].nombre, apellido: results[0].apellido, estado: results[0].estado, email: results[0].correo, rol: results[0].role});
                 } else {
                     res.status(401).json({ message: 'Correo o Contraseña incorrectas' });
                 }
@@ -438,6 +438,39 @@ app.delete('/favoritos/:userId/:favoritoId', (req, res) => {
             return res.status(404).send('Favorito no encontrado para este usuario.');
         }
         res.status(200).send('Favorito eliminado exitosamente.');
+    });
+});
+
+// Add a comment
+app.post('/comentarios', (req, res) => {
+    const { UniversidadID, UsuarioID, Comentario } = req.body;
+
+    if (!UniversidadID || !UsuarioID || !Comentario) {
+        return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+    console.log(UsuarioID)
+
+    const query = 'INSERT INTO comentarios (UniversidadID, UsuarioID, Comentario) VALUES (?, ?, ?)';
+    db.query(query, [UniversidadID, UsuarioID, Comentario], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al agregar el comentario' });
+        }
+        res.status(201).json({ message: 'Comentario agregado exitosamente', comentarioID: results.insertId });
+    });
+});
+
+// Get comments for a university
+app.get('/comentarios/:universidadID', (req, res) => {
+    const { universidadID } = req.params;
+
+    const query = 'SELECT c.ComentarioID, c.Comentario, c.Fecha, u.nombre, u.apellido FROM comentarios c JOIN usuarios u ON c.UsuarioID = u._id WHERE c.UniversidadID = ? ORDER BY c.Fecha DESC';
+    db.query(query, [universidadID], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al obtener los comentarios' });
+        }
+        res.status(200).json(results);
     });
 });
 

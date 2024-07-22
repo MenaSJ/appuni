@@ -8,11 +8,11 @@ const AppProvider = (props) => {
     const [unis, setUnis] = useState([]);
     const [searchUnis, setSearchUnis] = useState([]);
     const [loadingResults, setLoadingResults] = useState(false);
-    const [user, setUser] = useState({ _id: '', nombre: '', estado: '', email: '', rol: '' });
+    const [user, setUser] = useState({ _id: '', nombre: '', apellido: '', estado: '', email: '', rol: '' });
     const [rol, setRol] = useState('');
     const [favorites, setFavorites] = useState([]);
     const logout = () => {
-        setUser({ _id: '', nombre: '', estado: '', email: '', rol: '' }); // Limpia el estado del usuario
+        setUser({ _id: '', nombre: '', apellido: '', estado: '', email: '', rol: '' }); // Limpia el estado del usuario
     };
     const fetchUnis = async (url) => {
         try {
