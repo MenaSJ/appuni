@@ -8,7 +8,6 @@ import axios from "axios";
 const SearchResults = () => {
     const { searchUnis, loadingResults, user, createFavorite, deleteFavorite, favorites, setFavorites } = useContext(AppContext);
     const [startUp, setStartUp] = useState(true);
-
     useEffect(() => {
         if (searchUnis.length > 0 || loadingResults) {
             setStartUp(false);
