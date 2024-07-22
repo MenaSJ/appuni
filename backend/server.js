@@ -409,21 +409,35 @@ app.post('/create-favoritos-table', (req, res) => {
 // Ruta para agregar un favorito
 app.post('/favoritos', (req, res) => {
     const { UsuarioID, UniversidadID } = req.body;
-    console.log(req.body)
-    const query = 'INSERT INTO Favoritos (UsuarioID, UniversidadID) VALUES (?, ?)';
 
-    db.query(query, [UsuarioID, UniversidadID], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+    // Primero, verificar si el favorito ya existe
+    const checkQuery = 'SELECT * FROM Favoritos WHERE UsuarioID = ? AND UniversidadID = ?';
+    db.query(checkQuery, [UsuarioID, UniversidadID], (checkErr, checkResults) => {
+        if (checkErr) {
+            return res.status(500).json({ error: checkErr.message });
         }
-        res.status(201).json({ id: results.insertId, UsuarioID, UniversidadID });
+
+        if (checkResults.length > 0) {
+            // Si el favorito ya existe, devolver un mensaje de error
+            return res.status(400).json({ message: 'Este favorito ya existe.' });
+        } else {
+            // Si no existe, proceder a insertar el nuevo favorito
+            const insertQuery = 'INSERT INTO Favoritos (UsuarioID, UniversidadID) VALUES (?, ?)';
+            db.query(insertQuery, [UsuarioID, UniversidadID], (insertErr, insertResults) => {
+                if (insertErr) {
+                    return res.status(500).json({ error: insertErr.message });
+                }
+                res.status(201).json({ id: insertResults.insertId, UsuarioID, UniversidadID });
+            });
+        }
     });
 });
+
 
 // Ruta para obtener todos los favoritos de un usuario específico
 app.get('/favoritos/:UsuarioID', (req, res) => {
     const { UsuarioID } = req.params;
-    const query = ' SELECT Favoritos._id, Favoritos.UsuarioID, Universidades.Nombre, Universidades.Acronimo, Universidades.PaginaWeb FROM Favoritos JOIN Universidades ON Favoritos.UniversidadID = Universidades.UniversidadID WHERE Favoritos.UsuarioID = ? ;';
+    const query = ' SELECT Favoritos._id, Favoritos.UsuarioID, Favoritos.UniversidadID, Universidades.Nombre, Universidades.Acronimo, Universidades.PaginaWeb FROM Favoritos JOIN Universidades ON Favoritos.UniversidadID = Universidades.UniversidadID WHERE Favoritos.UsuarioID = ? ;';
 
     db.query(query, [UsuarioID], (err, results) => {
         if (err) {

@@ -39,24 +39,6 @@ const Details = () => {
             <div className="details-body">
                 <div className="details-row row1">
                     <div className="details-box">
-                        <h2>Misión</h2>
-                        <p>{university.mision}</p>
-                    </div>  
-                    <div className="details-box">
-                        <img src={assets.mision} alt="" />
-                    </div>
-                </div>
-                <div className="details-row row2">
-                    <div className="details-box">
-                        <img src={assets.vision} alt="" />
-                    </div>
-                    <div className="details-box">
-                        <h2>Visión</h2>
-                        <p>{university.vision}</p>
-                    </div>
-                </div>
-                <div className="details-row row1">
-                    <div className="details-box">
                         <h2>Carreras</h2>
                         <ul>
                             {
@@ -66,12 +48,30 @@ const Details = () => {
                                     )
                                 })
                             }
-                        </ul> 
+                        </ul>
                     </div>
                     <div className="details-box">
                         <a href={university.pagina_web} target="_blank" rel="noopener noreferrer">
                             <img className="details-img" src={university.logo} alt={university.nombre} />
                         </a>
+                    </div>
+                </div>
+                <div className="details-row row2">
+                    <div className="details-box">
+                        <h2>Misión</h2>
+                        <p>{university.mision}</p>
+                    </div>  
+                    <div className="details-box">
+                        <img src={assets.mision} alt="" />
+                    </div>
+                </div>
+                <div className="details-row row1">
+                    <div className="details-box">
+                        <img src={assets.vision} alt="" />
+                    </div>
+                    <div className="details-box">
+                        <h2>Visión</h2>
+                        <p>{university.vision}</p>
                     </div>
                 </div>
                 <div className="details-map row2">

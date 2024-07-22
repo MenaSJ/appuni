@@ -14,11 +14,11 @@ const SearchResults = () => {
         }
     }, [searchUnis, loadingResults]);
 
-    const handleAddFavorite = (universidadId) => {
+    const handleAddFavorite = (universidadId, nombre, siglas) => {
         createFavorite(user._id, universidadId)
             .then(() => {
                 // Actualizar el estado local de favoritos después de agregar
-                setFavorites([...favorites, { UniversidadID: universidadId }]);
+                setFavorites([...favorites, { UniversidadID: universidadId, Nombre: nombre, Acronimo: siglas }]);
             })
             .catch((error) => {
                 console.error("Error adding favorite:", error);
@@ -26,12 +26,14 @@ const SearchResults = () => {
     };
 
     const handleDeleteFavorite = (universidadId) => {
-        deleteFavorite(user._id, universidadId)
+        // Encontrar el favorito en la lista de favoritos
+        const favorite = favorites.find(fav => fav.UniversidadID === universidadId);
+        if (!favorite) return;
+
+        deleteFavorite(user._id, favorite._id)
             .then(() => {
-                // Filtrar favoritos para actualizar el estado local
-                const updatedFavorites = favorites.filter(favorite => favorite.UniversidadID !== universidadId);
-                // Actualizar el estado global de favoritos
-                setFavorites(updatedFavorites);
+                // Actualizar el estado local de favoritos después de eliminar
+                setFavorites(favorites.filter(fav => fav.UniversidadID !== universidadId));
             })
             .catch((error) => {
                 console.error("Error deleting favorite:", error);
@@ -94,7 +96,8 @@ const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, fa
     const navigate = useNavigate();
 
     const isFavorite = (universidadId) => {
-        return favorites.some(fav => fav.UniversidadID === universidadId);
+        console.log(favorites.find(fav => fav.UniversidadID === universidadId))
+        return favorites.find(fav => fav.UniversidadID === universidadId);
     };
 
     return (
@@ -115,7 +118,7 @@ const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, fa
                             ) : (
                                 <img
                                     src={assets.heart}
-                                    onClick={() => handleAddFavorite(item.id)}
+                                    onClick={() => handleAddFavorite(item.id, item.nombre, item.siglas)}
                                     className="btn-liked"
                                     alt="Add to Favorites"
                                 />
