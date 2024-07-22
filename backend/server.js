@@ -352,8 +352,6 @@ app.get('/usuarios', (req, res) => {
     });
 });
  
-
-
 // Ruta para eliminar usuario
 app.delete('/usuarios', (req, res) => {
     const { correo } = req.body;
@@ -362,21 +360,30 @@ app.delete('/usuarios', (req, res) => {
         return res.status(400).json({ error: 'El correo electrónico es requerido' });
     }
 
-    const query = 'DELETE FROM usuarios WHERE correo = ?';
+    const deleteFavoritosQuery = 'DELETE FROM favoritos WHERE UsuarioID = (SELECT _id FROM usuarios WHERE correo = ?)';
+    const deleteUserQuery = 'DELETE FROM usuarios WHERE correo = ?';
 
-    db.query(query, [correo], (err, results) => {
+    db.query(deleteFavoritosQuery, [correo], (err, results) => {
         if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error al eliminar el usuario' });
+            console.error('Error al eliminar los favoritos:', err);
+            return res.status(500).json({ error: 'Error al eliminar los favoritos del usuario' });
         }
 
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
+        db.query(deleteUserQuery, [correo], (err, results) => {
+            if (err) {
+                console.error('Error al eliminar el usuario:', err);
+                return res.status(500).json({ error: 'Error al eliminar el usuario' });
+            }
 
-        res.status(204).send();
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: 'Usuario no encontrado' });
+            }
+
+            res.status(204).send();
+        });
     });
 });
+
 
 // Ruta para crear la tabla de favoritos
 app.post('/create-favoritos-table', (req, res) => {
