@@ -351,6 +351,7 @@ app.get('/usuarios', (req, res) => {
         res.status(200).json(results); // Devuelve la lista de usuarios
     });
 });
+ 
 
 
 // Ruta para eliminar usuario
