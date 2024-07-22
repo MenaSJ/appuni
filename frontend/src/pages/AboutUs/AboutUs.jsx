@@ -2,7 +2,8 @@ import "./AboutUs.css";
 
 const AboutUs = () => {
     return (
-        <div className="about-us main-container">
+        <div className="acerca main-container">
+
             <div className="about-us-header">
                 <h1>Acerca de Nosotros</h1>
                 <p>Ayudando a los estudiantes de bachillerato a encontrar su camino universitario.</p>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import "./Comentarios.css";
 import { AppContext } from '../../context/Context';
 
 const Comentarios = ({ universidadID }) => {
@@ -42,28 +43,30 @@ const Comentarios = ({ universidadID }) => {
     };
 
     return (
-        <div className="comment-list">
+        <div className="comments row1">
             <h2>Comentarios</h2>
             {error && <p className="error">{error}</p>}
-            <ul>
-                {comments.map(comment => (
-                    <li key={comment.ComentarioID}>
-                        <p><strong>{comment.nombre} {comment.apellido}</strong> ({new Date(comment.Fecha).toLocaleString()}):</p>
-                        <p>{comment.Comentario}</p>
-                    </li>
-                ))}
-            </ul>
-            {user.email ? 
-                <>
-                    <textarea
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Añadir un comentario..."
-                    />
-                    <button onClick={handleAddComment}>Agregar Comentario</button>
-                </> :
-                <p>Para comentar debes primero iniciar sersion</p>
-            }
+            <div className="comments-body">
+                <ul>
+                    {comments.map(comment => (
+                        <li key={comment.ComentarioID}>
+                            <p><strong>{comment.nombre} {comment.apellido}</strong>: {comment.Comentario}</p>
+                            <p id='date'>({new Date(comment.Fecha).toLocaleString()})</p>
+                        </li>
+                    ))}
+                </ul>
+                {user.email ?
+                    <>
+                        <textarea
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Añadir un comentario..."
+                        />
+                        <button onClick={handleAddComment}>Agregar Comentario</button>
+                    </> :
+                    <p>Para comentar debes primero iniciar sersion</p>
+                }
+            </div>
         </div>
     );
 };

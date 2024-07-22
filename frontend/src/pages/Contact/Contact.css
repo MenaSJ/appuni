@@ -1,3 +1,9 @@
+
+.contacto{
+    height: 100%;
+    width: 100%;
+}
+
 .contact.main-container {
     padding: 20px;
     margin: 0 auto;
@@ -47,6 +53,7 @@
 .contact-info li svg {
     margin-right: 10px;
     color: #E94E77; /* Puedes ajustar el color de los íconos aquí */
+
 }
 
 .contact-message {
@@ -54,3 +61,4 @@
     font-size: 1.2em;
     color: #444;
 }
+
