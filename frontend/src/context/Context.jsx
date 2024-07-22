@@ -8,11 +8,11 @@ const AppProvider = (props) => {
     const [unis, setUnis] = useState([]);
     const [searchUnis, setSearchUnis] = useState([]);
     const [loadingResults, setLoadingResults] = useState(false);
-    const [user, setUser] = useState({ _id: '', nombre: '', estado: '', email: '' });
+    const [user, setUser] = useState({ _id: '', nombre: '', estado: '', email: '', rol: '' });
     const [rol, setRol] = useState('');
     const [favorites, setFavorites] = useState([]);
     const logout = () => {
-        setUser({ _id: '', nombre: '', estado: '', email: '' }); // Limpia el estado del usuario
+        setUser({ _id: '', nombre: '', estado: '', email: '', rol: '' }); // Limpia el estado del usuario
     };
     const fetchUnis = async (url) => {
         try {
@@ -40,9 +40,10 @@ const AppProvider = (props) => {
     };
     const deleteFavorite = async (userId, favoritoId) => {
         try {
-            await axios.delete(`http://localhost:4000/favoritos/${userId}/${favoritoId}`);
+            const response = await axios.delete(`http://localhost:4000/favoritos/${userId}/${favoritoId}`);
+            return response.data;
         } catch (error) {
-            console.log(error);
+            console.error("Error al eliminar el favorito: ", error);
         }
     };
     
@@ -58,7 +59,7 @@ const AppProvider = (props) => {
         favorites,
         createFavorite,
         deleteFavorite,
-        rol, setRol
+        rol, setRol,
         setFavorites
     };
     useEffect(() => {
