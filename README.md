@@ -21,13 +21,7 @@ Requerimientos Funcionales
         La plataforma debe soportar diferentes roles de usuario como estudiantes, profesores y administradores.
         Cada rol debe tener permisos específicos de acuerdo a sus funciones.
 
-    Gestión de Universidades
 
-        El administrador debe poder agregar y eliminar universidades de la plataforma.
-
-    Administración de Usuarios y Comentarios
-        El administrador debe poder eliminar usuarios de la plataforma.
-        El administrador debe poder eliminar comentarios inapropiados o que violen las políticas de la plataforma.
 
 Requerimientos No Funcionales
 
