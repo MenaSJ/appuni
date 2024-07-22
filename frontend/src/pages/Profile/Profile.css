@@ -56,6 +56,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 20px;
+    margin-right: 10px; /* Añadir margen derecho */
 }
 
 .logout-button:hover {
@@ -76,4 +77,25 @@ body {
 .loading {
     font-size: 20px;
     color: #555;
+}
+
+/* Estilo del botón "Ir a administración" */
+.admin-button {
+    background-color: #146c9b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    margin-left: 10px; /* Añadir margen izquierdo */
+}
+
+.admin-button:hover {
+    background-color: #6ecbe5;
+}
+
+.admin-button:active {
+    background-color: #6ecbe5;
 }
