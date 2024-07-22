@@ -73,3 +73,10 @@
     font-size: 15px; /* Tamaño de fuente */
     cursor: pointer; /* Cursor de puntero */
 }
+
+/* Los mensajes de error */
+.error-message {
+    color: red; /* Color de texto rojo */
+    font-weight: bold; /* Texto en negrita */
+    text-align: center; /* Centrando el texto */
+}
