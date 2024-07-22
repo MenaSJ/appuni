@@ -1,4 +1,3 @@
-// LoginPopup.js
 import React, { useState, useContext, useEffect } from 'react';
 import "./LoginPopup.css";
 import axios from 'axios';
@@ -39,14 +38,24 @@ const LoginPopup = ({ setShowLogin }) => {
             const response = await axios.post(URL + currState, formData);
 
             setUser({ nombre: response.data.nombre, apellido: response.data.apellido, email: response.data.email, _id:response.data._id });
-            console.log(response.data)
-            setRol(response.data.rol)
+            console.log(response.data);
+            setRol(response.data.rol);
 
             setShowLogin(false);
             navigate('/');
         } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setError('Contraseña incorrecta');
+                } else if (error.response.status === 404) {
+                    setError('Correo incorrecto');
+                } else {
+                    setError('Error al iniciar sesión');
+                }
+            } else {
+                setError('Error al iniciar sesión');
+            }
             console.log(error);
-            setError('Error al iniciar sesión');
         }
         restartForm();
     };
@@ -101,13 +110,12 @@ const LoginPopup = ({ setShowLogin }) => {
                         required
                     />}
                 </div>
+                {error && <p className="error-message">{error}</p>}
                 {currState === 'register' && (
-                    <>
-                        <div className="login-popup-condition">
-                            <input type="checkbox" required />
-                            <p>Acepto los términos y condiciones</p>
-                        </div>
-                    </>
+                    <div className="login-popup-condition">
+                        <input type="checkbox" required />
+                        <p>Acepto los términos y condiciones</p>
+                    </div>
                 )}
                 {currState === 'login'
                     ? <>
@@ -123,11 +131,11 @@ const LoginPopup = ({ setShowLogin }) => {
                             <button type="submit">Recuperar Contrasena</button>
                             <p>¿Iniciar Sesion? <span onClick={() => setCurrState('login')}>Click aqui</span></p>
                         </>
-                        
                 }
                 {currState === 'login' && <p>¿Olvidaste tu contraseña? <span onClick={() => setCurrState('recover')}>Recupérala aquí</span></p>}
             </form>
         </div>
     );
 }
+
 export default LoginPopup;
