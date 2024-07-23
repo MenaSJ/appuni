@@ -52,13 +52,7 @@ const LoginPopup = ({ setShowLogin }) => {
             navigate('/');
         } catch (error) {
             if (error.response) {
-                if (error.response.status === 401) {
-                    setError('Contraseña incorrecta');
-                } else if (error.response.status === 404) {
-                    setError('Correo incorrecto');
-                } else {
-                    setError('Error al iniciar sesión');
-                }
+                setError('Correo o Contraseña incorrecta')
             } else {
                 setError('Error al iniciar sesión');
             }
@@ -88,7 +82,9 @@ const LoginPopup = ({ setShowLogin }) => {
             nuevaContrasena: ''
         });
     }, [currState]);
-
+    useEffect(() => {
+        setError('');
+    }, [currState])
     return (
         <div className="login-popup">
             <form className="login-popup-container" onSubmit={handleSubmit}>

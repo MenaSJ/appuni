@@ -34,7 +34,7 @@ app.use(bodyParser.json()); // Usar bodyParser para procesar datos JSON
 // Ruta para obtener todas las universidades con sus carreras
 app.get('/universidades', (req, res) => {
     const query = `
-        SELECT u.UniversidadID, u.Nombre, u.Acronimo, u.PaginaWeb, u.Mision, u.Vision, u.Logo, 
+        SELECT u.UniversidadID, u.Nombre, u.Acronimo, u.PaginaWeb, u.Mision, u.Vision, u.Logo, u.Longitud, u.Latitud,
                c.id AS CarreraID, c.nombre AS NombreCarrera
         FROM Universidades u
         LEFT JOIN Universidad_Carreras uc ON u.UniversidadID = uc.universidad_id
@@ -60,6 +60,8 @@ app.get('/universidades', (req, res) => {
                     mision: row.Mision,
                     vision: row.Vision,
                     logo: row.Logo,
+                    latitud: row.Latitud,
+                    longitud: row.Longitud,
                     carreras: [] // Inicializar el array de carreras
                 };
             }
@@ -81,7 +83,7 @@ app.get('/universidades', (req, res) => {
 app.get('/universidades/search', (req, res) => {
     const { q } = req.query;
     const queryUniversidades = `
-        SELECT u.UniversidadID AS UniversidadID, u.nombre AS Nombre, u.Acronimo AS Acronimo, u.paginaweb AS PaginaWeb, u.mision AS Mision, u.vision AS Vision, u.logo AS Logo, 
+        SELECT u.UniversidadID AS UniversidadID, u.nombre AS Nombre, u.Acronimo AS Acronimo, u.paginaweb AS PaginaWeb, u.mision AS Mision, u.vision AS Vision, u.logo AS Logo, u.Longitud, u.Latitud,
                c.id AS CarreraID, c.nombre AS NombreCarrera
         FROM Universidades u
         LEFT JOIN Universidad_Carreras uc ON u.UniversidadID = uc.universidad_id
@@ -105,6 +107,8 @@ app.get('/universidades/search', (req, res) => {
                     mision: row.Mision,
                     vision: row.Vision,
                     logo: row.Logo,
+                    latitud: row.Latitud,
+                    longitud: row.Longitud,
                     carreras: []
                 };
             }
