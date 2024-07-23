@@ -13,15 +13,17 @@ const Details = () => {
         googleMapsApiKey: "AIzaSyDU21-y6wfNlFNnZWca7dlBFBu-O6sBlgU",
         libraries: ['places']
     });
-    console.log(searchUnis)
     const findUni = searchUnis.find(uni => uni.id === parseInt(id));
     let university;
+    //let coordinates;
     if (!findUni) {
         university = unis.find(uni => uni.id === parseInt(id));
+        console.log(university)
     } else {
         university = searchUnis.find(uni => uni.id === parseInt(id));
+        console.log(university)
     }
-    const coordinates = { lat: 19.332183, lng: -99.186000 }; // Random coordinates for UNAM
+    const coordinates = { lat: 19.332183, lng: -99.186000 }; 
     if (!university) {
         return <div className="details main-container">Universidad no encontrada</div>;
     }
@@ -78,9 +80,9 @@ const Details = () => {
                     <div className="details-box-map">
                         <h2>Ubicación</h2>
                         {isLoaded ? (
-                            <div style={{ height: '400px', width: '100%' }}>
+                            <div style={{ height: '600px', width: '100%' }}>
                                 <GoogleMap
-                                    center={coordinates}
+                                    center={{ lat: university.latitud, lng: university.longitud }}
                                     zoom={15}
                                     mapContainerStyle={{ width: "100%", height: "100%" }}
                                 >
