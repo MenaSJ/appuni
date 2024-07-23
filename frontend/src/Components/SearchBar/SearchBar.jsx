@@ -24,7 +24,7 @@ const SearchBar = () => {
         } catch (error) {
             console.log(error);
         }
-        setTimeout(() => { setLoadingResults(false); }, 1000)
+        setTimeout(() => { setLoadingResults(false); }, 100)
     }
     //Llamaremos a la api de busqueda cada que la variable de estado 'searchTerm' cambie.
     useEffect(() => {
