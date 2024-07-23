@@ -9,14 +9,11 @@ const Comentarios = ({ universidadID }) => {
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState('');
     const nombreEntero = `${user.nombre} ${user.apellido}`
-    console.log(user);
-    console.log(nombreEntero)
     useEffect(() => {
         const fetchComments = async () => {
             try {
                 const response = await axios.get(`http://localhost:4000/comentarios/${universidadID}`);
                 setComments(response.data);
-                console.log(comments)
             } catch (error) {
                 console.error(error);
                 setError('Error al obtener los comentarios');
@@ -50,7 +47,7 @@ const Comentarios = ({ universidadID }) => {
                 <ul>
                     {comments.map(comment => (
                         <li key={comment.ComentarioID}>
-                            <p><strong>{nombreEntero}</strong>: {comment.Comentario}</p>
+                            <p><strong>{comment.nombre} {comment.apellido}</strong>: {comment.Comentario}</p>
                             <p id='date'>({new Date(comment.Fecha).toLocaleString()})</p>
                         </li>
                     ))}
