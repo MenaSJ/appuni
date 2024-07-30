@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const { logger } = require('./middleware/logEvents');
+const errorHandler = require('./middleware/errorHandler');
+const app = express();
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -14,7 +17,7 @@ const db = mysql.createConnection({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
 });
-
+ 
 db.connect((err) => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
@@ -23,8 +26,6 @@ db.connect((err) => {
     }
 });
 
-// Inicializar la aplicación Express
-const app = express();
 
 // Middleware
 app.use(cors());
