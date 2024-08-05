@@ -1,14 +1,11 @@
-const db = require('../config/db');
+// models/Comentario.js
+const mongoose = require('mongoose');
 
-const Comentarios = {
-    agregarComentario: (usuarioID, reporteID, comentario, fecha, callback) => {
-        const query = 'INSERT INTO Comentarios (UsuarioID, ReporteID, Comentario, Fecha) VALUES (?, ?, ?, ?)';
-        db.query(query, [usuarioID, reporteID, comentario, fecha], callback);
-    },
-    eliminarComentario: (comentarioID, callback) => {
-        const query = 'DELETE FROM Comentarios WHERE ComentarioID = ?';
-        db.query(query, [comentarioID], callback);
-    }
-};
+const ComentarioSchema = new mongoose.Schema({
+  universidadID: { type: mongoose.Schema.Types.ObjectId, ref: 'Universidad', required: true },
+  usuarioID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  comentario: { type: String, required: true },
+  fecha: { type: Date, default: Date.now }
+});
 
-module.exports = Comentarios;
+module.exports = mongoose.model('Comentario', ComentarioSchema);

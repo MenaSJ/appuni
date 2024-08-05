@@ -1,68 +1,63 @@
 // App.js
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Navbar from './Components/Navbar/Navbar';
-import Footer from './Components/Footer/Footer';
+import Layout from './Components/Layout/Layout';
 import Home from './pages/Home/Home';
-import LoginPopup from './Components/LoginPopup/LoginPopup';
 import Search from './pages/Search/Search';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Contact from './pages/Contact/Contact';
 import Details from './pages/Details/Details';
-import RutaProtegida from './Components/Protected/RutaProtegida';
-import RutaProtegidaRol from './Components/Protected/RutaProtegidaRol';
 import SinPermiso from './Components/Protected/SinPermiso';
-import AppProvider from './context/Context';
+import AppProvider, { AppContext } from './context/Context';
 import Profile from './pages/Profile/Profile';
 import Admin from './pages/Admin/Admin';
 import Favorites from './pages/Favorites/Favorites';
 import AdminUniversitiesPage from './pages/AdminUniversitiesPage/AdminUniversitiesPage';
 import ReportsPage from './pages/ReportsPage/ReportsPage';
+import RequireAuth from './Components/RequireAuth/RequireAuth';
+import Unauthorized from './Components/Unauthorized/Unauthorized';
+import { useContext } from 'react';
+
+const ROLES = {
+  'User': 2001,
+  'Editor': 1984,
+  'Admin': 5150
+}
 
 function App() {
-  const [showLogin, setShowLogin] = useState(false);
   return (
     <AppProvider>
       <Router>
-        <div className="App">
-          <ScrollToTop />
-          {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
-          <Navbar setShowLogin={setShowLogin} />
           <Routes>
-            <Route path='*' element={<Home />} />
-            <Route path='/' element={<Home />} />
-            <Route path='/details' element={<Details />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path='/search' element={<Search />} />
+            <Route path='/' element={<Layout />} >
+              {/*rutas publicas */}
+              <Route path='/' element={<Home />} />
+              <Route path='/details' element={<Details />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path='/search' element={<Search />} />
             <Route path="/details/:id" element={<Details />} />
-            <Route path='/bloqueado' element={<SinPermiso />} />
-            <Route path='/reset-password/:token' element={<ResetPassword />} />
-            <Route path='/reportes' element={<ReportsPage />} />
-            <Route element={<RutaProtegida />}>
-              <Route path='/favoritos' element={<Favorites />} />
-              <Route path='/profile' element={<Profile />} /> 
+              <Route path='/bloqueado' element={<SinPermiso />} />
+              <Route path='/reset-password/:token' element={<ResetPassword />} />
+              <Route path='/reportes' element={<ReportsPage />} />
+              <Route path='/unauthorized' element={<Unauthorized />} />
+            
+              {/*rutas protegidas */}
+                <Route path='/favoritos' element={<Favorites />} />
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
+                <Route path='/profile' element={<Profile />} /> 
             </Route>
-            <Route element={<RutaProtegidaRol />}>
-              <Route path='/admin' element={<Admin />}/>
-              <Route path='/admin/universities' element={<AdminUniversitiesPage />} /> 
+            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/>}>
+                <Route path='/admin' element={<Admin />}/>
+                <Route path='/admin/universities' element={<AdminUniversitiesPage />} />
+            </Route>
+              <Route path='*' element={<Home />} />
             </Route>
           </Routes>
-        </div>
-        <Footer />
       </Router>
     </AppProvider>
   );
 }
-  const ScrollToTop = () => {
-    // Extracts pathname property(key) from an object
-    const { pathname } = useLocation();
-    // Automatically scrolls to top whenever pathname changes
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, [pathname]);
-  }
 
 export default App;

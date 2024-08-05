@@ -1,0 +1,151 @@
+.login-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #00000090;
+    /* Fondo semitransparente negro */
+    display: grid;
+}
+
+.login-popup h2 {
+    text-transform: capitalize;
+}
+
+.login-popup-container {
+    place-self: center;
+    width: max(23vw, 330px);
+    /* Ancho máximo 23vw o 330px */
+    color: #808080;
+    /* Color de texto gris */
+    background-color: white;
+    /* Fondo blanco */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    /* Espacio entre elementos hijos */
+    padding: 25px 30px;
+    /* Relleno */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    font-size: 14px;
+    /* Tamaño de fuente */
+    animation: fadeIn 0.5s;
+    /* Animación de aparición */
+}
+
+.login-popup-title {
+    display: flex;
+    justify-content: space-between;
+    /* Espacio entre elementos */
+    align-items: center;
+    /* Alineación vertical */
+    color: black;
+    /* Color de texto negro */
+}
+
+.login-popup-title img {
+    width: 16px;
+    /* Ancho de imagen */
+    cursor: pointer;
+    /* Cursor de puntero */
+}
+
+.login-popup-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    /* Espacio entre elementos */
+}
+
+.login-popup-inputs input,
+.login-popup-inputs select {
+    outline: none;
+    /* Sin contorno */
+    border: 1px solid #c9c9c9;
+    /* Borde gris */
+    padding: 7px;
+    /* Relleno */
+    border-radius: 4px;
+    /* Bordes redondeados */
+}
+
+.login-popup-condition {
+    display: flex;
+    align-items: start;
+    /* Alineación vertical inicial */
+    gap: 2px;
+    /* Espacio entre elementos */
+    margin-top: -15px;
+    /* Margen superior negativo */
+}
+
+.login-popup-condition input {
+    margin-top: 4px;
+    /* Margen superior */
+}
+
+.login-popup p span {
+    color: tomato;
+    /* Color de texto rojo */
+    font-weight: 500;
+    /* Peso de la fuente */
+    cursor: pointer;
+    /* Cursor de puntero */
+}
+
+.login-popup-container button {
+    border: none;
+    /* Sin borde */
+    padding: 10px;
+    /* Relleno */
+    border-radius: 4px;
+    /* Bordes redondeados */
+    color: white;
+    /* Color de texto blanco */
+    background-color: tomato;
+    /* Fondo rojo */
+    font-size: 15px;
+    /* Tamaño de fuente */
+    cursor: pointer;
+    /* Cursor de puntero */
+}
+
+/* Los mensajes de error */
+.error-message {
+    color: red;
+    /* Color de texto rojo */
+    font-weight: bold;
+    /* Texto en negrita */
+    text-align: center;
+    /* Centrando el texto */
+}
+
+.instructions {
+    font-size: 0.75rem;
+    position: relative;
+}
+
+.instructions>svg {
+    margin-right: 0.25rem;
+}
+
+.offscreen {
+    display: none;
+}
+
+.hide {
+    display: none;
+}
+
+.valid {
+    color: limegreen;
+    margin-left: 0.25rem;
+}
+
+.invalid {
+    color: red;
+    margin-left: 0.25rem;
+}

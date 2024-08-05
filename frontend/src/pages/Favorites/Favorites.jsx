@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../../context/Context';
+import { useNavigate } from 'react-router-dom';
 import './Favorites.css';
+import useAuth from '../../hooks/useAuth';
 
 const Favorites = () => {
-    const { favorites, deleteFavorite } = useContext(AppContext); // Cambia removeFavorite por deleteFavorite
-    console.log(favorites);
-
+    const { favorites, eliminarFavorites } = useContext(AppContext); // Cambia removeFavorite por deleteFavorite
+    const { auth } = useAuth();
+    const navigate = useNavigate();
+    console.log(favorites)
     return (
         <div className="favorites main-container">
             <h1>Mis Favoritos</h1>
@@ -22,10 +25,10 @@ const Favorites = () => {
                         <tbody>
                             {favorites.map(favorite => (
                                 <tr key={favorite._id}>
-                                    <td>{favorite.Nombre}</td> {/* Ajusta según la estructura de tus datos */}
-                                    <td>{favorite.Acronimo}</td> {/* Puedes mostrar el acrónimo también */}
+                                    <td style={{"cursor":"pointer"}} onClick={() => navigate(`/details/${favorite.universidadID._id}`)}>{favorite.universidadID.Nombre}</td> {/* Ajusta según la estructura de tus datos */}
+                                    <td>{favorite.universidadID.Siglas}</td> {/* Puedes mostrar el acrónimo también */}
                                     <td>
-                                        <button className="remove-button" onClick={() => deleteFavorite(favorite.UsuarioID, favorite._id)}> {/* Cambia removeFavorite por deleteFavorite */}
+                                        <button className="remove-button" onClick={() => eliminarFavorites(auth.id, favorite._id)} > {/* Cambia removeFavorite por deleteFavorite */}
                                             Eliminar
                                         </button>
                                     </td>
