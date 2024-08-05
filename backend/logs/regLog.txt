@@ -853,3 +853,17 @@
 20240805	11:59:33	b2fb42ce-fb85-4146-8f6d-a1547a0b5147	GET	http://localhost:3000	/universidades/66ad675aa83c435ffe67765a
 20240805	11:59:33	58fca30b-f3c1-4b63-8010-ab5c8bd7c124	GET	http://localhost:3000	/comentarios?universidadID=66ad675aa83c435ffe67765a
 20240805	11:59:33	aa17fcfd-2bf5-495c-951a-5543c76d9d61	GET	http://localhost:3000	/universidades/66ad675aa83c435ffe67765a
+20240805	12:37:41	568b6ffa-2ac4-469c-b88d-d751af1bcab4	GET	http://localhost:3000	/universidades
+20240805	12:37:43	cb218c5e-381f-4c69-a5e7-08e8c9b38a64	GET	http://localhost:3000	/universidades/66ad675aa83c435ffe67765a
+20240805	12:37:43	5e4a699d-66e9-4865-97cf-568e4ea1c882	GET	http://localhost:3000	/comentarios?universidadID=66ad675aa83c435ffe67765a
+20240805	12:37:43	7c7c66ec-f5ce-4fb9-8f0c-6a818c101baf	GET	http://localhost:3000	/comentarios?universidadID=66ad675aa83c435ffe67765a
+20240805	12:37:43	578bcfa1-73de-4d9a-980e-066ff05e7445	GET	http://localhost:3000	/universidades/66ad675aa83c435ffe67765a
+20240805	12:37:51	da14a878-7cba-4c6f-b27d-ec9c8c21b528	GET	http://localhost:3000	/universidades
+20240805	12:37:56	dfbe2138-957c-4ce8-a1e2-a3d5f39d237e	GET	http://localhost:3000	/universidades/search?q=par
+20240805	12:38:00	79a88977-4924-4921-afe4-d8ec167bf25c	GET	http://localhost:3000	/universidades/search?q=uni
+20240805	12:38:02	f6c070d4-d9bd-4b81-8352-e83f8a2bf2bb	GET	http://localhost:3000	/universidades/search?q=utp%27
+20240805	12:38:04	0ee2050f-d130-4188-bbad-4c06bd210906	GET	http://localhost:3000	/universidades/search?q=utp
+20240805	12:38:09	f00a8b07-330d-4c80-8262-696bc66116bc	POST	http://localhost:3000	/favoritos
+20240805	12:38:19	ddec79e3-c10d-4ab5-853d-edfc9ea23ebe	POST	http://localhost:3000	/favoritos
+20240805	12:38:32	79de6b16-645f-4321-a083-bdfc302ea1be	GET	http://localhost:3000	/universidades
+20240805	12:38:35	ba96db92-21f6-447e-9516-df61ba38279f	GET	http://localhost:3000	/universidades
