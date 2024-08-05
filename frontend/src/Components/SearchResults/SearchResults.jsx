@@ -3,54 +3,31 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
 import { assets } from "../../assets/assets";
-import axios from "axios";
-
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
+const FAVORITES_URL = '/favoritos';
 const SearchResults = () => {
-    const { searchUnis, loadingResults, user, createFavorite, deleteFavorite, favorites, setFavorites } = useContext(AppContext);
+    const { unis, favorites, LoadingResults, setFavorites } = useContext(AppContext);
+    const { auth } = useAuth();
+    const [searchUnis, setSearchUnis] = useState([]);
     const [startUp, setStartUp] = useState(true);
     useEffect(() => {
-        if (searchUnis.length > 0 || loadingResults) {
+        if (searchUnis.length > 0 || LoadingResults) {
             setStartUp(false);
         }
-    }, [searchUnis, loadingResults]);
+    }, [searchUnis, LoadingResults]);
 
-    const handleAddFavorite = (universidadId, nombre, siglas) => {
-        createFavorite(user._id, universidadId)
-            .then(() => {
-                // Actualizar el estado local de favoritos después de agregar
-                setFavorites([...favorites, { UniversidadID: universidadId, Nombre: nombre, Acronimo: siglas }]);
-            })
-            .catch((error) => {
-                console.error("Error adding favorite:", error);
-            });
-    };
-
-    const handleDeleteFavorite = (universidadId) => {
-        // Encontrar el favorito en la lista de favoritos
-        const favorite = favorites.find(fav => fav.UniversidadID === universidadId);
-        if (!favorite) return;
-
-        deleteFavorite(user._id, favorite._id)
-            .then(() => {
-                // Actualizar el estado local de favoritos después de eliminar
-                setFavorites(favorites.filter(fav => fav.UniversidadID !== universidadId));
-            })
-            .catch((error) => {
-                console.error("Error deleting favorite:", error);
-            });
-    };
-
-    if (startUp) {
+    if (unis.length < 1) {
         return (
             <div className="search-container">
                 <div className="search-results">
-                    <h2>Aquí podrás buscar universidades</h2>
+                    <h2>Lo sentimos, no se han encontrado resultados para tu búsqueda</h2>
                 </div>
             </div>
         );
     }
-
-    if (loadingResults) {
+    
+    if (LoadingResults) {
         return (
             <div className="search-container">
                 <div className="search-results">
@@ -60,11 +37,11 @@ const SearchResults = () => {
         );
     }
 
-    if (searchUnis.length < 1) {
+    if (startUp) {
         return (
             <div className="search-container">
                 <div className="search-results">
-                    <h2>Lo sentimos, no se han encontrado resultados para tu búsqueda</h2>
+                    <Universidades unis={unis}  favorites={favorites} auth={auth} />
                 </div>
             </div>
         );
@@ -73,7 +50,7 @@ const SearchResults = () => {
     return (
         <div className="search-container">
             <div className="search-results">
-                <Universidades searchUnis={searchUnis} handleAddFavorite={handleAddFavorite} handleDeleteFavorite={handleDeleteFavorite} favorites={favorites} />
+                {/* <Universidades searchUnis={searchUnis}  favorites={favorites} /> */}
             </div>
         </div>
     );
@@ -92,40 +69,81 @@ function CardLoading() {
     );
 }
 
-const Universidades = ({ searchUnis, handleAddFavorite, handleDeleteFavorite, favorites }) => {
+const Universidades = ({ unis, favorites, auth }) => {
+    const { setFavorites } = useContext(AppContext);
     const navigate = useNavigate();
 
+    // Check if a university is in the user's favorites
     const isFavorite = (universidadId) => {
-        console.log(favorites.find(fav => fav.UniversidadID === universidadId))
-        return favorites.find(fav => fav.UniversidadID === universidadId);
+        if (favorites.find(fav => fav.universidadID._id == universidadId)) return true;
+        else return false;
+    };
+
+    // Add a university to favorites
+    const crearFavorite = async (usuarioID, universidadID) => {
+        try {
+            const response = await axios.post(FAVORITES_URL, {
+                usuarioID,
+                universidadID
+            });
+            if (response.status === 201) {
+                setFavorites([...favorites, response.data]);
+            }
+        } catch (error) {
+            console.error("Error adding favorite:", error);
+            // Optionally show a user-friendly message
+        }
+    };
+
+    // Remove a university from favorites
+    const eliminarFavorite = async (usuarioID, universidadID) => {
+        try {
+            const response = await axios.delete(FAVORITES_URL, {
+                data: { usuarioID, universidadID }
+            });
+            setFavorites(favorites.filter(fav => fav.UniversidadID !== universidadID));
+            if (response.status === 200) {
+                const updatedFavorites = favorites.filter(favorite =>
+                    !(favorite.usuarioID === usuarioID && favorite.universidadID._id === universidadID)
+                );
+                setFavorites(updatedFavorites);
+            }
+        } catch (error) {
+            console.error("Error removing favorite:", error);
+            // Optionally show a user-friendly message
+        }
     };
 
     return (
         <>
-            {searchUnis.map((item, index) => (
+            {unis.map((item, index) => (
                 <div className="uni-card" key={index}>
-                    <img src={item.logo} alt={item.nombre} onClick={() => navigate(`/details/${item.id}`)} />
+                    <img
+                        src={item.Logo}
+                        alt={item.Nombre}
+                        onClick={() => navigate(`/details/${item._id}`)}
+                    />
                     <div className="uni-card-body">
                         <div className="uni-title">
-                            <h1>{item.nombre} <span>({item.siglas})</span></h1>
-                            {isFavorite(item.id) ? (
+                            <h1>{item.Nombre} <span>({item.Siglas})</span></h1>
+                            {auth.username && isFavorite(item._id) ? (
                                 <img
                                     src={assets.heart_full}
-                                    onClick={() => handleDeleteFavorite(item.id)}
+                                    onClick={() => eliminarFavorite(auth.id, item._id)}
                                     className="btn-not-liked"
                                     alt="Remove from Favorites"
                                 />
                             ) : (
                                 <img
                                     src={assets.heart}
-                                    onClick={() => handleAddFavorite(item.id, item.nombre, item.siglas)}
+                                    onClick={() => crearFavorite(auth.id, item._id)}
                                     className="btn-liked"
                                     alt="Add to Favorites"
                                 />
                             )}
                         </div>
                         <div className="uni-carreras">
-                            <b>Misión:</b> {item.mision}
+                            <b>Misión:</b> {item.Mision}
                         </div>
                     </div>
                 </div>

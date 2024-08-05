@@ -1,7 +1,9 @@
 const express = require('express');                                                                                     
 const router = express.Router();
-const registerController = require('../controllers/registerController');
+const usuariosController = require('../controllers/usuariosController');
 
-router.post('/', registerController.handleNewUser)
+router.route('/')
+    .get(usuariosController.getUsuarios)
+    .delete(usuariosController.deleteUsuario);
 
 module.exports = router

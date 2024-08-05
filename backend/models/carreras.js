@@ -1,15 +1,8 @@
-const db = require('../config/db');
+// models/Carrera.js
+const mongoose = require('mongoose');
 
-const Carrera = {
-    getByUniversityId: (universidadID, callback) => {
-        const query = `
-            SELECT C.NombreCarrera
-            FROM Universidades U
-            JOIN Carreras C ON U.UniversidadID = C.UniversidadID
-            WHERE U.UniversidadID = ?;
-        `;
-        db.query(query, [universidadID], callback);
-    }
-};
+const CarreraSchema = new mongoose.Schema({
+  Nombre: { type: String, required: true, unique: true  }
+});
 
-module.exports = Carrera;
+module.exports = mongoose.model('Carrera', CarreraSchema);
