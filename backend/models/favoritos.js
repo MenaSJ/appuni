@@ -1,14 +1,21 @@
-const db = require('../config/db');
+// models/Favorito.js
+const mongoose = require('mongoose');
 
-const Favoritos = {
-    addFavorito: (usuarioID, universidadID, callback) => {
-        const query = 'INSERT INTO Favoritos (UsuarioID, UniversidadID) VALUES (?, ?)';
-        db.query(query, [usuarioID, universidadID], callback);
+const FavoritoSchema = new mongoose.Schema({
+    usuarioID: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User', // Asegúrate de que el modelo de usuario esté registrado como 'User'
+        required: true 
     },
-    deleteFavorito: (favoritoID, callback) => {
-        const query = 'DELETE FROM Favoritos WHERE FavoritoID = ?';
-        db.query(query, [favoritoID], callback);
+    universidadID: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Universidad', // Asegúrate de que el modelo de universidad esté registrado como 'Universidad'
+        required: true 
+    },
+    fechaAgregado: { 
+        type: Date, 
+        default: Date.now 
     }
-};
+});
 
-module.exports = Favoritos;
+module.exports = mongoose.model('Favorito', FavoritoSchema);

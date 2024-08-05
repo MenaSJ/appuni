@@ -1,11 +1,44 @@
-const db = require('../config/db');
+const mongoose = require('mongoose');
 
-const Usuarios = {
-    // Función para actualizar la contraseña
-    actualizarContrasena: (usuarioID, nuevaContrasena, callback) => {
-        const query = 'UPDATE Usuarios SET Contrasena = ? WHERE UsuarioID = ?';
-        db.query(query, [nuevaContrasena, usuarioID], callback);
+const UserSchema = new mongoose.Schema({
+    estado: {
+        type: String,
+        required: true,
+        trim: true  
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    roles: {
+        User: {
+            type: Number,
+            default: 2001
+        },
+        Editor: Number,
+        Admin: Number
+    },
+    refreshToken: String,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
-};
+});
 
-module.exports = Usuarios;
+module.exports = mongoose.model('User', UserSchema);

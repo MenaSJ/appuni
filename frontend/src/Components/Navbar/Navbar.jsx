@@ -4,11 +4,12 @@ import { assets } from "../../assets/assets";
 import "./Navbar.css";
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/Context';
+import useAuth from "../../hooks/useAuth";
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = ({ setShowPopup }) => {
     const [menu, setMenu] = useState("home");
     const navigate = useNavigate();
-    const { user, setSearchUnis } = useContext(AppContext);
+    const { auth } = useAuth();
     const handleSearchNavigate = () => {
         navigate('/search');
         setMenu('');
@@ -22,7 +23,6 @@ const Navbar = ({ setShowLogin }) => {
         } else if (section === "contacto") {
             navigate('/contact');
         }
-        setSearchUnis([]);
         setMenu(section);
     };
 
@@ -44,11 +44,11 @@ const Navbar = ({ setShowLogin }) => {
                     <img src={assets.favorites_icon} alt="" onClick={() => navigate('/favoritos')} />
                     <div className="dot"></div>
                 </div>
-                {user.email ? (
+                {auth.username ? (
                     <img src={assets.profile_icon} alt="" onClick={handleProfileNavigate} style={{ cursor: "pointer", margin: "0 40px" }} />
                     //<span>{user.email}</span>
                 ) : (
-                    <button onClick={() => setShowLogin(true)} className="btn">Login</button>
+                        <button onClick={() => setShowPopup(true)} className="btn">Login</button>
                 )}
             </div>
         </div>
