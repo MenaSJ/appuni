@@ -37,20 +37,20 @@
 .login-popup-inputs {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espacio entre elementos */
+    gap: 14px; /* Espacio entre elementos */
 }
 .login-popup-inputs input,
 .login-popup-inputs select {
     outline: none; /* Sin contorno */
     border: 1px solid #c9c9c9; /* Borde gris */
-    padding: 10px; /* Relleno */
+    padding: 7px; /* Relleno */
     border-radius: 4px; /* Bordes redondeados */
 }
 
 .login-popup-condition {
     display: flex;
     align-items: start; /* Alineación vertical inicial */
-    gap: 8px; /* Espacio entre elementos */
+    gap: 2px; /* Espacio entre elementos */
     margin-top: -15px; /* Margen superior negativo */
 }
 
@@ -79,4 +79,35 @@
     color: red; /* Color de texto rojo */
     font-weight: bold; /* Texto en negrita */
     text-align: center; /* Centrando el texto */
+}
+.errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.instructions {
+    font-size: 0.75rem;
+    position: relative;
+}
+.instructions>svg {
+    margin-right: 0.25rem;
+}
+
+.offscreen {
+    display: none;
+}
+.hide {
+    display: none;
+}
+
+.valid {
+    color: limegreen;
+    margin-left: 0.25rem;
+}
+
+.invalid {
+    color: red;
+    margin-left: 0.25rem;
 }

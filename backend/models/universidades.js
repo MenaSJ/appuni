@@ -1,10 +1,20 @@
-const db = require('../config/db');
+// models/Universidad.js
+const mongoose = require('mongoose');
 
-const Universidades = {
-    getAll: (callback) => {
-        const query = 'SELECT UniversidadID, Nombre, Acronimo, PaginaWeb, Vision, Mision, Logo FROM Universidades';
-        db.query(query, callback);
+const UniversidadSchema = new mongoose.Schema({
+  Nombre: { type: String, required: true, unique: true },
+  Siglas: { type: String, required: true },
+  Pagina_Web: { type: String, required: true },
+  Vision: { type: String, required: true },
+  Mision: { type: String, required: true },
+  Logo: { type: String, required: true },
+  Latitud: { type: Number, required: true },
+  Longitud: { type: Number, required: true },
+  Carreras: [
+    {
+      Carrera: { type: String, required: true }
     }
-};
+  ]
+});
 
-module.exports = Universidades;
+module.exports = mongoose.model('Universidad', UniversidadSchema);

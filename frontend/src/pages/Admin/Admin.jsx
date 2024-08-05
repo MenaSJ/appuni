@@ -1,40 +1,40 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Admin.css';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get('http://localhost:4000/usuarios');
-                setUsers(response.data);
-            } catch (error) {
-                console.error(error);
-                setError('Error al recuperar la lista de usuarios');
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchUsers = async () => {
+    //         try {
+    //             const response = await axios.get('http://localhost:4000/usuarios');
+    //             setUsers(response.data);
+    //         } catch (error) {
+    //             console.error(error);
+    //             setError('Error al recuperar la lista de usuarios');
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchUsers();
-    }, []);
+    //     fetchUsers();
+    // }, []);
 
-    const handleDelete = async (correo) => {
-        try {
-            await axios.delete('http://localhost:4000/usuarios', {
-                data: { correo }
-            });
-            setUsers(users.filter(user => user.correo !== correo));
-        } catch (error) {
-            console.error('Error al eliminar el usuario:', error);
-            setError('Error al eliminar el usuario');
-        }
-    };
+    // const handleDelete = async (correo) => {
+    //     try {
+    //         await axios.delete('http://localhost:4000/usuarios', {
+    //             data: { correo }
+    //         });
+    //         setUsers(users.filter(user => user.correo !== correo));
+    //     } catch (error) {
+    //         console.error('Error al eliminar el usuario:', error);
+    //         setError('Error al eliminar el usuario');
+    //     }
+    // };
 
     return (
         <section className='main-container admin'>
@@ -65,7 +65,7 @@ const Admin = () => {
                                         <td>{user.apellido}</td>
                                         <td>{user.correo}</td>
                                         <td>
-                                            <button onClick={() => handleDelete(user.correo)}>Eliminar</button>
+                                            <button >Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
