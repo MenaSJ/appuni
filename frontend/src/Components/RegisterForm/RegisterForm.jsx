@@ -28,6 +28,7 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
     const [matchFocus, setMatchFocus] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
+    const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
@@ -83,12 +84,14 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
             console.log(JSON.stringify(response))
             setSuccess(true)
         } catch (err) {
+            setFormData({ estado: '', email: '' })
+            setError(true);
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                setErrMsg('No respuesta del servidor');
             } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+                setErrMsg('Utiliza otro username o correo');
             } else {
-                setErrMsg('Registration Failed')
+                setErrMsg('Registro fallo')
             }
             errRef.current.focus();
         }
@@ -107,10 +110,10 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
         ) :
             (
                 <div className="login-popup">
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
-                        {errMsg}
-                    </p>
                     <form action="" className="login-popup-container" onSubmit={handleSubmit}>
+                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
+                            {errMsg}
+                        </p>
                         <div className="login-popup-title" >
                             <h1>Registro</h1>
                             <img onClick={() => setShowPopup(false)} src={assets.cross_icon} alt="" />
@@ -130,6 +133,7 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
                                 id="username"
                                 ref={userRef}
                                 autoComplete="off"
+                                value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                                 aria-invalid={validName ? "false" : "true"}
@@ -139,9 +143,9 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
                             />
                             <p id="uidnote" className={userFocus && username && !validName ? "instructions" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle} />
-                                4 to 24 characters.<br />
-                                Must begin with a letter.<br />
-                                Letters, numbers, underscores, hyphens allowed.
+                                De 4 a 24 caracteres.<br />
+                                Debe comenzar con una letra.<br />
+                                Se permiten letras, números, guiones bajos y guiones.
                             </p>
                             <label htmlFor="password">
                                 Contraseña:
@@ -166,9 +170,9 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
                             />
                             <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle} />
-                                8 to 24 characters.<br />
-                                Must include uppercase and lowercase letters, a number and a special character.<br />
-                                Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                                De 8 a 24 caracteres.<br />
+                                Debe incluir letras mayúsculas y minúsculas, un número y un carácter especial.<br />
+                                Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
                             </p>
                             <label htmlFor="confirm_pwd">
                                 Confirmar Contraseña:
@@ -183,6 +187,7 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
                                 type="password"
                                 id='confirm_pwd'
                                 onChange={(e) => setMatchPwd(e.target.value)}
+                                value={matchPwd}
                                 required
                                 aria-invalid={validMatch ? "false" : "true"}
                                 aria-describedby="confirmnote"
@@ -200,7 +205,7 @@ const RegisterForm = ({ setShowLogin, setShowPopup }) => {
                                 type="text"
                                 name="email"
                                 placeholder=""
-                                value={formData.apellido}
+                                value={formData.email}
                                 onChange={handleChange}
                                 required
                             />

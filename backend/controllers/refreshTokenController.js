@@ -7,15 +7,19 @@ const handleRefreshToken = async (req, res) => {
     if (!cookies?.jwt) return res.sendStatus(401); // Si no hay cookie jwt, responde con 401 (No autorizado)
     console.log(cookies.jwt); // Imprime el valor de la cookie jwt para depuración
     const refreshToken = cookies.jwt; // Almacena el valor de la cookie jwt en una variable
-
+    console.log(cookies)
     const foundUser = await User.findOne({ refreshToken }).exec(); // Busca el usuario que tiene el refresh token correspondiente
+    console.log('hola')
     if (!foundUser) return res.sendStatus(401); // Si no se encuentra el usuario, responde con 401 (No autorizado)
-
+    
     // Verifica el refresh token
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET, // Clave secreta para verificar el refresh token
         (err, decoded) => { // Callback que maneja la verificación
+            console.log(decoded);
+            console.log(foundUser);
+            console.log(err);
             if (err || foundUser.username !== decoded.username) return res.sendStatus(403); // Si hay un error o el nombre de usuario no coincide, responde con 403 (Prohibido)
             const roles = Object.values(foundUser.roles);
             // Si el token es válido, genera un nuevo access token

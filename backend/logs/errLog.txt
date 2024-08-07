@@ -210,3 +210,6 @@
 20240803	22:17:34	6ae32c35-c814-420c-a453-6ceb9573fd3f	Error: Not allowed by CORS
 20240803	22:17:34	d6e61dac-6bc0-4c2f-9fa1-f64c7f6a16d2	Error: Not allowed by CORS
 20240803	22:34:28	6d6b5e7f-ab72-4aab-ad3c-e5d7f0aa5c68	Error: Not allowed by CORS
+20240806	22:51:46	e5b79f6f-2fea-4d3b-b066-33db77cf7f8b	TypeError: Usuarios.getUsuarios is not a function
+20240806	22:51:46	4c34c597-d3d7-46e3-bcdf-cbf52ce00332	TypeError: Usuarios.getUsuarios is not a function
+20240806	23:15:44	8695124b-0e88-4243-b6a0-5f57be854c1e	TypeError: User.getUsuarios is not a function

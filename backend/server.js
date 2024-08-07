@@ -24,15 +24,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/universidades', require('./routes/api/universidades'));
+app.use('/refresh', require('./routes/refresh'));
+app.use('/recover', require('./routes/recover'));
+app.use('/logout', require('./routes/logout'));
 app.use('/auth', require('./routes/auth'));
 app.use('/register', require('./routes/register'));
-app.use('/usuarios', require('./routes/usuarios'));
-app.use('/refresh', require('./routes/refresh'));
-app.use('/logout', require('./routes/logout'));
-app.use('/recover', require('./routes/recover'));
 app.use('/comentarios', require('./routes/api/comentarios'))
-app.use(verifyJWT);
 app.use('/favoritos', require('./routes/api/favoritos'));
+app.use(verifyJWT);
+app.use('/usuarios', require('./routes/usuarios'));
 app.use('/carreras', require('./routes/api/carreras'));
 
 app.use(errorHandler);

@@ -44,8 +44,8 @@ function App() {
               <Route path='/unauthorized' element={<Unauthorized />} />
             
               {/*rutas protegidas */}
-                <Route path='/favoritos' element={<Favorites />} />
             <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
+                <Route path='/favoritos' element={<Favorites />} />
                 <Route path='/profile' element={<Profile />} /> 
             </Route>
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/>}>

@@ -46,7 +46,7 @@ const Details = () => {
             <div className="details-header">
                 <div className="details-title">
                     <h1>{uniDetalles.Nombre}</h1>
-                    <h4>({uniDetalles.Siglas})</h4>
+                    <h4>{uniDetalles.Siglas}</h4>
                 </div>
             </div>
             <div className="details-body">

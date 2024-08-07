@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { AppContext } from '../../context/Context';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
@@ -11,7 +11,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        setAuth({})
+        setAuth({});
         navigate('/'); // Redirigir al home después del logout
     };
 
@@ -19,10 +19,13 @@ const Profile = () => {
         navigate('/admin'); // Redirigir a la página de administración
     };
 
-    if (!auth) {
+    if (!auth || !auth.username) {
         return <div className="loading">Cargando...</div>;
     }
 
+    const isAdmin = auth.roles.includes(5150); // Verifica si el rol de administrador está presente
+    console.log(isAdmin);
+    console.log(auth)
     return (
         <div className="profile-container main-container">
             <div className="profile-card">
@@ -35,13 +38,13 @@ const Profile = () => {
                 {error && <p className="error">{error}</p>}
                 <div className="profile-buttons">
                     <button className="logout-button" onClick={handleLogout}>Log out</button>
-                    {auth.rol === 'admin' && ( // Mostrar el botón solo si el usuario es admin
+                    {isAdmin && ( // Mostrar el botón solo si el usuario es admin
                         <button className="admin-button" onClick={handleAdminRedirect}>Ir a Administración</button>
                     )}
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default Profile;

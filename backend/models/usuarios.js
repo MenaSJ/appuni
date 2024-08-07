@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
@@ -30,7 +31,9 @@ const UserSchema = new mongoose.Schema({
         Editor: Number,
         Admin: Number
     },
-    refreshToken: String,
+    refreshToken: String,   // Token para JWT
+    recoveryToken: String,  // Token para recuperación de cuenta
+    tokenExpiration: Date,  // Fecha y hora de expiración del token de recuperación
     createdAt: {
         type: Date,
         default: Date.now

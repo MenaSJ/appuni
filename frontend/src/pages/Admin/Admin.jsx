@@ -1,46 +1,73 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Admin.css';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useAuth from '../../hooks/useAuth'; // Importa el hook useAuth
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { auth } = useAuth(); // Usa el hook useAuth para obtener el nombre de usuario
 
-    // useEffect(() => {
-    //     const fetchUsers = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:4000/usuarios');
-    //             setUsers(response.data);
-    //         } catch (error) {
-    //             console.error(error);
-    //             setError('Error al recuperar la lista de usuarios');
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
 
-    //     fetchUsers();
-    // }, []);
+        const getUsers = async () => {
+            try {
+                const response = await axiosPrivate.post('/usuarios',
+                    { username: auth?.username }, // Envía el nombre de usuario en el cuerpo de la solicitud
+                    { signal: controller.signal }
+                );
+                console.log(response.data);
+                if (isMounted) {
+                    setUsers(response.data);
+                }
+            } catch (err) {
+                console.error(err);
+                if (err.response?.status === 403) {
+                    navigate('/login', { state: { from: location }, replace: true });
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
 
-    // const handleDelete = async (correo) => {
-    //     try {
-    //         await axios.delete('http://localhost:4000/usuarios', {
-    //             data: { correo }
-    //         });
-    //         setUsers(users.filter(user => user.correo !== correo));
-    //     } catch (error) {
-    //         console.error('Error al eliminar el usuario:', error);
-    //         setError('Error al eliminar el usuario');
-    //     }
-    // };
+        getUsers();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
+    }, [axiosPrivate, navigate, location, auth]);
+
+    useEffect(() => {
+        setError('');
+    }, []);
+
+    const handleDelete = async (username) => {
+        try {
+            await axiosPrivate.delete('/usuarios', {
+                data: { username }
+            });
+            setUsers(users.filter(user => user.username !== username));
+        } catch (error) {
+            console.error('Error al eliminar el usuario:', error);
+            setError('Error al eliminar el usuario');
+        }
+    };
 
     return (
         <section className='main-container admin'>
-            <h1 className='admin-title'>Admins Page</h1>
+            <h1 className='admin-title'>Página de Administradores</h1>
             <div className="flexGrow admin-header">
-                <Link to="/" className='admin-box'>Home</Link>
+                <Link to="/" className='admin-box'>Inicio</Link>
             </div>
             <h2 className='admin-body'>Lista de Usuarios</h2>
             {loading ? (
@@ -52,20 +79,20 @@ const Admin = () => {
                         <table className='admin-table'>
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
+                                    <th>Nombre de Usuario</th>
+                                    <th>Estado</th>
                                     <th>Correo</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {users.map(user => (
-                                    <tr key={user.correo}>
-                                        <td>{user.nombre}</td>
-                                        <td>{user.apellido}</td>
-                                        <td>{user.correo}</td>
+                                    <tr key={user.email}>
+                                        <td>{user.username}</td>
+                                        <td>{user.estado}</td>
+                                        <td>{user.email}</td>
                                         <td>
-                                            <button >Eliminar</button>
+                                            <button onClick={() => handleDelete(user.username)}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}

@@ -1,50 +1,53 @@
-const Usuarios = require('../models/usuarios');
+const User = require('../models/usuarios');
+const getUsuarios = async (req, res) => {
+    try {
+        const { username: currentUsername } = req.body; // Obtener el nombre de usuario desde el cuerpo de la solicitud
 
-// Función para actualizar la contraseña
-const getUsuarios = (req, res) => {
-    Usuarios.getUsuarios((err, results) => {
-        if (err) {
-            return res.status(500).send('Error del servidor.');
+        console.log('Cuerpo de la solicitud:', req.body); // Agrega este log para verificar el cuerpo de la solicitud
+        const usuarios = await User.find({ username: { $ne: currentUsername } }); // Encuentra todos los usuarios excepto el actual
+        console.log('Usuarios encontrados:', usuarios); // Agrega este log para verificar los usuarios encontrados
+
+        if (!usuarios.length) {
+            return res.status(404).send('No hay usuarios disponibles.'); // Maneja el caso donde no hay usuarios
         }
-        const updatedUsuarios = results.map(usuario => {
+
+        const updatedUsuarios = usuarios.map(usuario => {
+            const userObject = usuario.toObject();
             return {
-                ...usuario,
-                "pwd": "",
-                "roles": JSON.parse(usuario.roles)
-            }
-        })
+                ...userObject,
+                "pwd": "",  // No envíes la contraseña
+                "roles": typeof userObject.roles === 'string' ? JSON.parse(userObject.roles) : userObject.roles  // Convierte roles de string a objeto si es necesario
+            };
+        });
+
         res.json(updatedUsuarios).status(200);
-    })
+    } catch (err) {
+        console.error('Error del servidor:', err); // Agrega este log para verificar errores
+        res.status(500).send('Error del servidor.');
+    }
 };
-const deleteUsuario = (req, res) => {
+
+
+// Eliminar un usuario
+const deleteUsuario = async (req, res) => {
     const { username } = req.body;
     if (!username) {
-        return res.status(400).send({'message':'Username necesario'})
+        return res.status(400).send({'message': 'Username necesario'});
     }
-    Usuarios.deleteUsuario((err, results) => {
-        if (err) {
-            return res.status(500).send('Error del servidor.');
+
+    try {
+        const result = await User.deleteOne({ username });
+        if (result.deletedCount === 0) {
+            return res.status(404).send('Usuario no encontrado');
         }
-        if (results.affectedRows === 0) {
-            return res.sendStatus(400);
-        }
-        return res.sendStatus(200);
-    })
-}
-const actualizarContrasena = (req, res) => {
-    const { usuarioID } = req.params;
-    const { nuevaContrasena } = req.body;
-    if (!nuevaContrasena) {
-        return res.status(400).send('Nueva contraseña es requerida.');
+        res.status(200).send('Usuario eliminado');
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        res.status(500).send('Error del servidor.');
     }
-    Usuarios.actualizarContrasena(usuarioID, nuevaContrasena, (err, results) => {
-        if (err) {
-            return res.status(500).send('Error al actualizar la contraseña.');
-        }
-        res.status(200).send('Contraseña actualizada exitosamente.');
-    });
 };
 
 module.exports = {
-    getUsuarios, deleteUsuario
+    getUsuarios,
+    deleteUsuario
 };

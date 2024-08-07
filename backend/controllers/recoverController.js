@@ -1,66 +1,66 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-const recoverModel = require('../models/recover');
+const User = require('../models/usuarios');
 
-const recoverPassword = (req, res) => {
-    const { correo } = req.body;
+// Función para solicitar recuperación de contraseña
+const recoverPassword = async (req, res) => {
+    const { email } = req.body;
 
-    if (!correo) {
+    if (!email) {
         return res.status(400).json({ error: 'Correo electrónico es requerido' });
     }
 
-    const token = crypto.randomBytes(20).toString('hex');
-    const expirationTime = new Date();
-    expirationTime.setHours(expirationTime.getHours() + 1);
+    const recoveryToken = crypto.randomBytes(20).toString('hex');
+    const tokenExpiration = new Date();
+    tokenExpiration.setHours(tokenExpiration.getHours() + 1);
 
-    usuariosModel.findUserByEmail(correo, (err, result) => {
-        if (err) {
-            console.error('Error obteniendo correo:', err);
-            return res.status(500).json({ error: 'Error obteniendo correo' });
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).send('No se encontró el correo electrónico');
         }
 
-        if (result.length === 0) {
-            return res.status(404).send('No se encontró el correo');
-        }
+        user.recoveryToken = recoveryToken;
+        user.tokenExpiration = tokenExpiration;
+        await user.save();
 
-        usuariosModel.updateTokenAndExpiration(correo, token, expirationTime, (updateErr) => {
-            if (updateErr) {
-                console.error('Error actualizando token:', updateErr);
-                return res.status(500).json({ error: 'Error actualizando token' });
-            }
-
-            const transporter = nodemailer.createTransport({
-                service: 'Gmail',
-                host: 'smtp.gmail.com',
-                port: 465,
-                secure: true,
-                auth: {
-                    user: 'juanPruebasb@gmail.com',
-                    pass: 'jtia vsxs vekf xdwz',
-                },
-            });
-
-            const mailOptions = {
-                from: 'juanPruebasb@gmail.com',
-                to: correo,
-                subject: 'Recuperación de contraseña',
-                text: `Haz clic en el siguiente enlace para recuperar tu contraseña: http://localhost:3000/reset-password/${token}`,
-            };
-
-            transporter.sendMail(mailOptions, (sendMailErr, info) => {
-                if (sendMailErr) {
-                    console.error('Error enviando correo:', sendMailErr);
-                    return res.status(500).send('Error enviando correo');
-                }
-                console.log(`Correo enviado: ${info.response}`);
-                return res.status(200).send('Revisa tu correo para instrucciones sobre cómo restablecer tu contraseña');
-            });
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'juanPruebasb@gmail.com',
+                pass: 'jtia vsxs vekf xdwz', // Considera usar variables de entorno para la contraseña
+            },
         });
-    });
+
+        const mailOptions = {
+            from: 'juanPruebasb@gmail.com',
+            to: email,
+            subject: 'Recuperación de contraseña',
+            text: `Haz clic en el siguiente enlace para recuperar tu contraseña: http://localhost:3000/reset-password/${recoveryToken}`,
+        };
+
+        transporter.sendMail(mailOptions, (sendMailErr, info) => {
+            if (sendMailErr) {
+                console.error('Error enviando correo:', sendMailErr);
+                return res.status(500).send('Error enviando correo');
+            }
+            console.log(`Correo enviado: ${info.response}`);
+            return res.status(200).send('Revisa tu correo para instrucciones sobre cómo restablecer tu contraseña');
+        });
+
+    } catch (error) {
+        console.error('Error en la recuperación de contraseña:', error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
 };
 
-const resetPassword = (req, res) => {
+// Función para restablecer la contraseña
+const resetPassword = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
@@ -68,43 +68,30 @@ const resetPassword = (req, res) => {
         return res.status(400).send('Contraseña es requerida');
     }
 
-    usuariosModel.findUserByToken(token, (err, result) => {
-        if (err) {
-            console.error('Error verificando token:', err);
-            return res.status(500).send('Error interno del servidor');
-        }
+    try {
+        const user = await User.findOne({ recoveryToken: token });
 
-        if (result.length === 0) {
+        if (!user) {
             return res.status(404).send('Token inválido');
         }
 
-        const { correo, token_time } = result[0];
         const currentTime = new Date();
-
-        if (currentTime > token_time) {
+        if (currentTime > user.tokenExpiration) {
             return res.status(404).send('El token ha expirado');
         }
 
-        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
-            if (hashErr) {
-                console.error('Error al cifrar la contraseña:', hashErr);
-                return res.status(500).send('Error interno del servidor');
-            }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        user.recoveryToken = null;
+        user.tokenExpiration = null;
+        await user.save();
 
-            usuariosModel.updatePassword(correo, hashedPassword, (updateErr, updateResult) => {
-                if (updateErr) {
-                    console.error('Error actualizando la contraseña:', updateErr);
-                    return res.status(500).send('Error actualizando la contraseña');
-                }
+        return res.status(200).send('Contraseña restablecida con éxito');
 
-                if (updateResult.affectedRows === 0) {
-                    return res.status(404).send('Error actualizando la contraseña');
-                }
-
-                return res.status(200).send('Contraseña restablecida con éxito');
-            });
-        });
-    });
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).send('Error interno del servidor');
+    }
 };
 
 module.exports = {

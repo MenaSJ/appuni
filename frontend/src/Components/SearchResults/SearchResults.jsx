@@ -3,14 +3,18 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
 import { assets } from "../../assets/assets";
-import axios from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate"; // Importa useAxiosPrivate
 import useAuth from "../../hooks/useAuth";
+
 const FAVORITES_URL = '/favoritos';
+
 const SearchResults = () => {
     const { unis, favorites, LoadingResults, setFavorites } = useContext(AppContext);
     const { auth } = useAuth();
     const [searchUnis, setSearchUnis] = useState([]);
     const [startUp, setStartUp] = useState(true);
+    const axiosPrivate = useAxiosPrivate(); // Usa useAxiosPrivate para obtener la instancia de axios
+
     useEffect(() => {
         if (searchUnis.length > 0 || LoadingResults) {
             setStartUp(false);
@@ -26,7 +30,7 @@ const SearchResults = () => {
             </div>
         );
     }
-    
+
     if (LoadingResults) {
         return (
             <div className="search-container">
@@ -41,7 +45,7 @@ const SearchResults = () => {
         return (
             <div className="search-container">
                 <div className="search-results">
-                    <Universidades unis={unis}  favorites={favorites} auth={auth} />
+                    <Universidades unis={unis} favorites={favorites} auth={auth} />
                 </div>
             </div>
         );
@@ -50,7 +54,7 @@ const SearchResults = () => {
     return (
         <div className="search-container">
             <div className="search-results">
-                {/* <Universidades searchUnis={searchUnis}  favorites={favorites} /> */}
+                {/* <Universidades searchUnis={searchUnis} favorites={favorites} /> */}
             </div>
         </div>
     );
@@ -72,17 +76,18 @@ function CardLoading() {
 const Universidades = ({ unis, favorites, auth }) => {
     const { setFavorites } = useContext(AppContext);
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate(); // Usa useAxiosPrivate para obtener la instancia de axios
 
     // Check if a university is in the user's favorites
     const isFavorite = (universidadId) => {
-        if (favorites.find(fav => fav.universidadID._id == universidadId)) return true;
+        if (favorites.find(fav => fav.universidadID._id === universidadId)) return true;
         else return false;
     };
 
     // Add a university to favorites
     const crearFavorite = async (usuarioID, universidadID) => {
         try {
-            const response = await axios.post(FAVORITES_URL, {
+            const response = await axiosPrivate.post(FAVORITES_URL, {
                 usuarioID,
                 universidadID
             });
@@ -98,15 +103,11 @@ const Universidades = ({ unis, favorites, auth }) => {
     // Remove a university from favorites
     const eliminarFavorite = async (usuarioID, universidadID) => {
         try {
-            const response = await axios.delete(FAVORITES_URL, {
+            const response = await axiosPrivate.delete(FAVORITES_URL, {
                 data: { usuarioID, universidadID }
             });
-            setFavorites(favorites.filter(fav => fav.UniversidadID !== universidadID));
             if (response.status === 200) {
-                const updatedFavorites = favorites.filter(favorite =>
-                    !(favorite.usuarioID === usuarioID && favorite.universidadID._id === universidadID)
-                );
-                setFavorites(updatedFavorites);
+                setFavorites(favorites.filter(fav => fav.universidadID._id !== universidadID));
             }
         } catch (error) {
             console.error("Error removing favorite:", error);

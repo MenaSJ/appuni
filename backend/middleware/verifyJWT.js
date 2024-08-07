@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken'); // Importa el módulo jsonwebtoken para manejar JWT
-require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
 
 // Middleware para verificar el JWT
 const verifyJWT = (req, res, next) => {
