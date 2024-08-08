@@ -17,7 +17,6 @@ import AdminUniversitiesPage from './pages/AdminUniversitiesPage/AdminUniversiti
 import ReportsPage from './pages/ReportsPage/ReportsPage';
 import RequireAuth from './Components/RequireAuth/RequireAuth';
 import Unauthorized from './Components/Unauthorized/Unauthorized';
-import { useContext } from 'react';
 
 const ROLES = {
   'User': 2001,
@@ -27,7 +26,6 @@ const ROLES = {
 
 function App() {
   return (
-    <AppProvider>
       <Router>
           <Routes>
             <Route path='/' element={<Layout />} >
@@ -56,7 +54,6 @@ function App() {
             </Route>
           </Routes>
       </Router>
-    </AppProvider>
   );
 }
 
