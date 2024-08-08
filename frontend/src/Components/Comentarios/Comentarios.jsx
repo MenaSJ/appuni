@@ -14,6 +14,7 @@ const Comentarios = ({ universidadID }) => {
             const response = await axios.get(COMENTARIOS_URL,
                 {params: { universidadID }}
             );
+            console.log(response.data)
             setComments(response.data);
         } catch (error) {
             console.error(error);
@@ -33,7 +34,6 @@ const Comentarios = ({ universidadID }) => {
                 comentario: newComment
             });
             setNewComment('');
-            setComments([...comments, { Comentario: newComment, Fecha: new Date(), Usuario: auth.username }]);
             fetchComments();
         } catch (error) {
             console.error(error);
